@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Firma {
+  id             String        @id @default(cuid())
+  ad             String
+  telefon        String?
+  email          String?
+  adres          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  teklifler      Teklif[]
+  yetkiliKisiler YetkiliKisi[]
+}
+
+model YetkiliKisi {
+  id        String   @id @default(cuid())
+  firmaId   String
+  adSoyad   String
+  telefon   String?
+  email     String?
+  pozisyon  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  firma     Firma    @relation(fields: [firmaId], references: [id], onDelete: Cascade)
+}
+
+model Teklif {
+  id            String       @id @default(cuid())
+  ad            String?      // Teklif adı
+  firmaId       String
+  userId        String
+  makinaId      String?
+  durum         Int          @default(1)
+  toplamFiyat   Float        @default(0)
+  aciklama      String?
+  teklifTarihi  DateTime?    // Kullanıcı tarafından belirlenen teklif tarihi
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  planlamalar   Planlama[]
+  makina        Makina?      @relation(fields: [makinaId], references: [id])
+  user          User         @relation(fields: [userId], references: [id])
+  firma         Firma        @relation(fields: [firmaId], references: [id])
+  teklifUrunler TeklifUrun[]
+  uretimler     Uretim[]
+  sozlesme      Sozlesme?
+  uretimPlanlamaAdimlari UretimPlanlamaAdimi[]
+}
+
+model TeklifUrun {
+  id          String   @id @default(cuid())
+  teklifId    String
+  urunAdi     String
+  miktar      Int
+  birimFiyat  Float
+  toplamFiyat Float
+  aciklama    String?
+  createdAt   DateTime @default(now())
+  teklif      Teklif   @relation(fields: [teklifId], references: [id], onDelete: Cascade)
+}
+
+model Planlama {
+  id              String   @id @default(cuid())
+  teklifId        String
+  baslangicTarihi DateTime
+  bitisTarihi     DateTime
+  durum           String   @default("Planlandı")
+  aciklama        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  teklif          Teklif   @relation(fields: [teklifId], references: [id])
+}
+
+model Makina {
+  id                String          @id @default(cuid())
+  ad                String
+  model             String?
+  durum             String          @default("Aktif")
+  aciklama          String?
+  fotograf          String?
+  toplamMaliyet     Float           @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  makinaAtamalar    MakinaAtama[]
+  makinaBilesenleri MakinaBilesen[]
+  teklifler         Teklif[]
+  uretimPlanlamaAdimlari UretimPlanlamaAdimi[]
+}
+
+model MakinaBilesen {
+  id            String   @id @default(cuid())
+  makinaId      String
+  ad            String
+  aciklama      String?
+  miktar        Int      @default(1)
+  birimMaliyet  Float    @default(0)
+  paraBirimi    String   @default("EUR")
+  toplamMaliyet Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  makina        Makina   @relation(fields: [makinaId], references: [id], onDelete: Cascade)
+}
+
+model MakinaAtama {
+  id              String    @id @default(cuid())
+  makinaId        String
+  uretimId        String
+  baslangicTarihi DateTime
+  bitisTarihi     DateTime?
+  createdAt       DateTime  @default(now())
+  uretim          Uretim    @relation(fields: [uretimId], references: [id])
+  makina          Makina    @relation(fields: [makinaId], references: [id])
+}
+
+model Uretim {
+  id              String          @id @default(cuid())
+  teklifId        String
+  userId          String
+  durum           String          @default("Üretimde")
+  baslangicTarihi DateTime        @default(now())
+  bitisTarihi     DateTime?
+  aciklama        String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  makinaAtamalar  MakinaAtama[]
+  user            User            @relation(fields: [userId], references: [id])
+  teklif          Teklif          @relation(fields: [teklifId], references: [id])
+  gelismeler      UretimGelisme[]
+  urunGiderleri   UrunGideri[]
+  satinAlmalar    SatinAlma[]
+}
+
+model UretimGelisme {
+  id              String   @id @default(cuid())
+  uretimId        String
+  aciklama        String
+  tahminiIlerleme Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  uretim          Uretim   @relation(fields: [uretimId], references: [id], onDelete: Cascade)
+}
+
+model UrunGideri {
+  id        String   @id @default(cuid())
+  uretimId  String
+  giderAdi  String
+  tutar     Float
+  aciklama  String?
+  createdAt DateTime @default(now())
+  uretim    Uretim   @relation(fields: [uretimId], references: [id], onDelete: Cascade)
+}
+
+model DuzenlemeGecmisi {
+  id          String   @id @default(cuid())
+  tablo       String
+  kayitId     String
+  kayitAdi    String?
+  islem       String
+  kullaniciId String
+  aciklama    String
+  eskiDeger   String?
+  yeniDeger   String?
+  createdAt   DateTime @default(now())
+  kullanici   User     @relation(fields: [kullaniciId], references: [id])
+}
+
+model Sozlesme {
+  id          String   @id @default(cuid())
+  teklifId    String   @unique
+  dosyaUrl    String?  // Sözleşme dosyası URL'i
+  notlar      String?  // Sözleşme notları
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  teklif      Teklif   @relation(fields: [teklifId], references: [id], onDelete: Cascade)
+}
+
+model UretimPlanlamaAdimi {
+  id              String   @id @default(cuid())
+  teklifId        String
+  adimAdi         String
+  siraNo          Int      // Adım sırası
+  kullaniciId     String   // Kim yapacak
+  makinaId        String?  // Hangi tezgah
+  baslangicTarihi DateTime
+  bitisTarihi     DateTime
+  isMaliyeti      Float    @default(0)
+  durum           String   @default("Planlandı") // Planlandı, Başladı, Tamamlandı
+  aciklama        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  teklif          Teklif   @relation(fields: [teklifId], references: [id], onDelete: Cascade)
+  kullanici       User     @relation(fields: [kullaniciId], references: [id])
+  makina          Makina?  @relation(fields: [makinaId], references: [id])
+  satinAlmalar    SatinAlma[]
+}
+
+model SatinAlma {
+  id                      String   @id @default(cuid())
+  genelGider             Boolean  @default(false) // Genel gider mi? (true ise uretimId null olabilir)
+  tekrarlayanMi          Boolean  @default(false) // Tekrarlayan gider mi?
+  tekrarlamaSuresi       String?  // Tekrarlama süresi: "Aylık", "Haftalık", "Yıllık", "Günlük"
+  sonrakiTekrarTarihi    DateTime? // Sonraki tekrar tarihi
+  uretimId                String?  // Hangi üretim için (genel gider ise null)
+  uretimPlanlamaAdimiId   String?  // Hangi üretim planlama adımı için (null ise bağımsız)
+  urunAdi                 String   // Satın alınacak ürün/hammadde adı
+  miktar                  Float    // Miktar
+  birim                   String   @default("Adet") // Birim (Adet, kg, m, vb.)
+  birimFiyat              Float    // Birim fiyat
+  toplamFiyat             Float    // Toplam fiyat
+  tedarikciFirma          String?  // Tedarikçi firma adı
+  tedarikciIletisim       String?  // Tedarikçi iletişim bilgisi
+  durum                   String   @default("Planlandı") // Planlandı, Sipariş Verildi, Teslim Edildi, İptal
+  siparisTarihi           DateTime? // Sipariş tarihi
+  teslimTarihi            DateTime? // Teslim tarihi
+  faturaNo                String?  // Fatura numarası
+  aciklama                String?  // Açıklama
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  uretim                  Uretim?  @relation(fields: [uretimId], references: [id], onDelete: Cascade)
+  uretimPlanlamaAdimi     UretimPlanlamaAdimi? @relation(fields: [uretimPlanlamaAdimiId], references: [id], onDelete: Cascade)
+  teklifler                SatinAlmaTeklif[]
+}
+
+model SatinAlmaTeklif {
+  id              String   @id @default(cuid())
+  satinAlmaId     String
+  tedarikciAdi    String   // Tedarikçi firma adı
+  teklifNo        String?  // Teklif numarası
+  birimFiyat      Float    // Birim fiyat
+  toplamFiyat     Float    // Toplam fiyat
+  teslimSuresi    Int?     // Teslim süresi (gün)
+  odemeKosullari  String?  // Ödeme koşulları
+  aciklama        String?  // Açıklama
+  durum           String   @default("Beklemede") // Beklemede, Seçildi, Reddedildi
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  satinAlma       SatinAlma @relation(fields: [satinAlmaId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String             @id @default(cuid())
+  username            String             @unique
+  password            String?
+  adSoyad             String?
+  email               String?            @unique
+  emailOnaylandiMi    Boolean            @default(false)
+  emailOnayToken      String?
+  emailOnayTarih      DateTime?
+  ilkGirisVarmi       Boolean            @default(false)
+  sifreSifirlamaToken String?
+  sifreSifirlamaTarih DateTime?
+  yetki               String             @default("Kullanıcı")
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  duzenlemeGecmisleri DuzenlemeGecmisi[]
+  teklifler           Teklif[]
+  uretimler           Uretim[]
+  uretimPlanlamaAdimlari UretimPlanlamaAdimi[]
+}

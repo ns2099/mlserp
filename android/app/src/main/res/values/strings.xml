@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MLSMakina</string>
+    <string name="title_activity_main">MLSMakina</string>
+    <string name="package_name">com.mlsmakina.app</string>
+    <string name="custom_url_scheme">com.mlsmakina.app</string>
+</resources>

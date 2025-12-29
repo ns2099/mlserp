@@ -1,0 +1,58 @@
+{
+  "name": "mls-makina-uretim",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && prisma migrate deploy && next build",
+    "postinstall": "prisma generate",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "tsx prisma/seed.ts",
+    "create-admin": "node scripts/create-admin.js",
+    "check-db": "node scripts/check-db.js",
+    "verify-admin": "node scripts/verify-admin.js",
+    "update-password": "node scripts/update-admin-password.js",
+    "update-existing-users": "node scripts/update-existing-users-email-verification.js"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/cli": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@prisma/client": "^5.7.1",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.0.6",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "lucide-react": "^0.303.0",
+    "next": "^14.0.4",
+    "next-auth": "^4.24.5",
+    "nodemailer": "^7.0.7",
+    "prisma": "^5.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.3",
+    "tailwind-merge": "^2.2.0",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.10.6",
+    "@types/nodemailer": "^6.4.14",
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.7.0"
+  }
+}
