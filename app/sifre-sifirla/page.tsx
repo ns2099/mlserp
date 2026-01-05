@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { Lock, Eye, EyeOff } from 'lucide-react'
 
-export default function SifreSifirlaPage() {
+function SifreSifirlaContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')

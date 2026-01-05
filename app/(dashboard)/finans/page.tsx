@@ -8,6 +8,8 @@ import {
   Package,
   FileText,
   ShoppingCart,
+
+export const dynamic = 'force-dynamic'
   ArrowRight,
 } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'

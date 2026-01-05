@@ -10,6 +10,8 @@ const durumColors: Record<string, string> = {
   İptal: 'bg-red-100 text-red-800',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function SatinAlmaListePage({
   searchParams,
 }: {

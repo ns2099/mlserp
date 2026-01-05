@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { DollarSign } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function UrunGiderleriPage() {
   const giderler = await prisma.urunGideri.findMany({
     include: {

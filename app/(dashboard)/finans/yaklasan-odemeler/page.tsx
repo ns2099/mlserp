@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, Calendar, Clock, DollarSign } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function FinansYaklasanOdemelerPage() {
   // Tüm satın almaları getir
   const satinAlmalar = await prisma.satinAlma.findMany({

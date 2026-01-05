@@ -4,6 +4,8 @@ import { Plus, Building2, Edit, Trash2, History } from 'lucide-react'
 import FirmaSilButton from './FirmaSilButton'
 import FirmaExcelExport from './FirmaExcelExport'
 
+export const dynamic = 'force-dynamic'
+
 export default async function FirmaListePage() {
   const firmalar = await prisma.firma.findMany({
     orderBy: { createdAt: 'desc' },

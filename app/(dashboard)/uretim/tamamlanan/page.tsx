@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import UretimTamamlananWrapper from './UretimTamamlananWrapper'
 
+export const dynamic = 'force-dynamic'
+
 export default async function UretimTamamlananPage() {
   const uretimlerRaw = await prisma.uretim.findMany({
     where: { durum: 'Onaylandı' },

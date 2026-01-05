@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { Calendar, CheckCircle, Clock, ShoppingCart, ArrowRight, Eye } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PlanlamaPage() {
   const planlamalar = await prisma.planlama.findMany({
     include: {

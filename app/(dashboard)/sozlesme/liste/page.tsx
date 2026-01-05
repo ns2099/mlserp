@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { FileText, Download, Eye, Plus } from 'lucide-react'
 import { formatDate, formatCurrency } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function SozlesmeListePage() {
   // Sadece onaylanan tekliflerin (durum=2) sözleşmelerini getir
   const sozlesmeler = await prisma.sozlesme.findMany({

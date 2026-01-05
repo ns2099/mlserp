@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { CheckCircle2, Plus } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function OnaylananUrunlerPage() {
   const uretimler = await prisma.uretim.findMany({
     where: { durum: 'Onaylandı' },

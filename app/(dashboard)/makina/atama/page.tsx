@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { Wrench } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function MakinaAtamaPage() {
   const makinalar = await prisma.makina.findMany({
     where: { durum: 'Aktif' },

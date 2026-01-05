@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, FileText, TrendingUp, TrendingDown, DollarSign } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function FinansProjelerPage() {
   // Tüm teklifleri getir
   const teklifler = await prisma.teklif.findMany({

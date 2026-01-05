@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma'
 import { CheckCircle } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function SonKontrolPage() {
   const uretimler = await prisma.uretim.findMany({
     where: { durum: 'Son Kontrol' },

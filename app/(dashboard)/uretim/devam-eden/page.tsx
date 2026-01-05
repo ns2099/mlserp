@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import UretimDevamEdenWrapper from './UretimDevamEdenWrapper'
 
+export const dynamic = 'force-dynamic'
+
 export default async function UretimDevamEdenPage() {
   const uretimlerRaw = await prisma.uretim.findMany({
     where: { 

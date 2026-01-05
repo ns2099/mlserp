@@ -5,6 +5,8 @@ import { formatDate } from '@/lib/utils'
 import KullaniciSilButton from './KullaniciSilButton'
 import KullaniciExcelExport from './KullaniciExcelExport'
 
+export const dynamic = 'force-dynamic'
+
 export default async function KullaniciListePage() {
   const kullanicilar = await prisma.user.findMany({
     select: {

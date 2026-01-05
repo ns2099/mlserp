@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { FolderKanban, Building2, FileText, Factory, ShoppingCart, FileCheck, Calendar } from 'lucide-react'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 const durumLabels: Record<number, string> = {
   1: 'Bekleyen',
   2: 'Onaylanan',
