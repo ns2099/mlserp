@@ -8,10 +8,10 @@ import {
   Package,
   FileText,
   ShoppingCart,
-
-export const dynamic = 'force-dynamic'
   ArrowRight,
 } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 import { formatCurrency, formatDate } from '@/lib/utils'
 
 export default async function FinansPage() {
