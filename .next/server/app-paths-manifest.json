@@ -1,9 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/api/dashboard/aylik-teklifler/route": "app/api/dashboard/aylik-teklifler/route.js",
-  "/api/doviz-kuru/route": "app/api/doviz-kuru/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/(dashboard)/projeler/page": "app/(dashboard)/projeler/page.js",
-  "/(dashboard)/projeler/[id]/page": "app/(dashboard)/projeler/[id]/page.js"
-}
