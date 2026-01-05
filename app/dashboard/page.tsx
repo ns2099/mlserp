@@ -104,7 +104,7 @@ export default async function DashboardPage() {
         tamamlananToplam={tamamlananToplam._sum.toplamFiyat || 0}
       />
 
-      <DashboardCharts aylikTeklifler={aylikTeklifler} />
+      <DashboardCharts aylikTekliflerDurumlu={[]} />
     </div>
   )
 }

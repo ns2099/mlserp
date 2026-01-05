@@ -20,6 +20,7 @@ interface AylikTeklifDurumlu {
 
 interface DashboardChartsProps {
   aylikTekliflerDurumlu?: AylikTeklifDurumlu[]
+  aylikTeklifler?: Array<{ ay: number; sayi: number }>
 }
 
 const ayIsimleri = [
