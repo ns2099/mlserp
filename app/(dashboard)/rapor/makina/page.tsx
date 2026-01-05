@@ -1,4 +1,6 @@
-import { prisma } from '@/lib/prisma'
+'use client'
+
+import { useEffect, useState } from 'react'
 import { Wrench } from 'lucide-react'
 import {
   PieChart,
@@ -9,23 +11,35 @@ import {
   Tooltip,
 } from 'recharts'
 
-export default async function MakinaRaporuPage() {
-  const makinalar = await prisma.makina.findMany({
-    include: {
-      makinaAtamalar: {
-        include: {
-          uretim: true,
-        },
-      },
-    },
-  })
+export default function MakinaRaporuPage() {
+  const [makinalar, setMakinalar] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const chartData = makinalar.map((m) => ({
-    name: m.ad,
-    value: m.makinaAtamalar.length,
+  useEffect(() => {
+    fetch('/api/makina/rapor')
+      .then((res) => res.json())
+      .then((data) => {
+        setMakinalar(data || [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const chartData = makinalar.map((m: any) => ({
+    name: m.ad || 'İsimsiz',
+    value: m.makinaAtamalar?.length || 0,
   }))
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
+
+  if (loading) {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">Makina Raporu</h1>
+        <p>Yükleniyor...</p>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -61,7 +75,7 @@ export default async function MakinaRaporuPage() {
         <div className="bg-white rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-4">Makina Durumları</h3>
           <div className="space-y-4">
-            {makinalar.map((makina) => (
+            {makinalar.map((makina: any) => (
               <div key={makina.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
                   <p className="font-medium text-gray-900">{makina.ad}</p>
@@ -106,7 +120,7 @@ export default async function MakinaRaporuPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {makinalar.map((makina) => (
+              {makinalar.map((makina: any) => (
                 <tr key={makina.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{makina.ad}</div>
@@ -129,7 +143,7 @@ export default async function MakinaRaporuPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">
-                      {makina.makinaAtamalar.length}
+                      {makina.makinaAtamalar?.length || 0}
                     </div>
                   </td>
                 </tr>
