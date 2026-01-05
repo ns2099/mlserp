@@ -87,7 +87,7 @@ export default async function SozlesmeListePage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{sozlesme.teklif.firma.ad}</div>
+                      <div className="text-sm text-gray-900">{sozlesme.teklif.firma?.ad || 'Firma Yok'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
