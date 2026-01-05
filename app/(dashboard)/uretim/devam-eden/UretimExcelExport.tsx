@@ -45,7 +45,7 @@ export default function UretimExcelExport({
       'Durum': uretim.durum,
       'Başlangıç Tarihi': uretim.baslangicTarihi,
       'Bitiş Tarihi': uretim.bitisTarihi || '',
-      'Sorumlu': uretim.user.adSoyad,
+      'Sorumlu': uretim.user.adSoyad || '',
       'Toplam Fiyat': uretim.teklif.toplamFiyat,
       'Açıklama': uretim.aciklama || '',
     }))

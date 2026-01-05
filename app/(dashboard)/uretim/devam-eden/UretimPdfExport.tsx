@@ -45,7 +45,7 @@ export default function UretimPdfExport({
       bitis: uretim.bitisTarihi
         ? new Date(uretim.bitisTarihi).toLocaleDateString('tr-TR')
         : '-',
-      sorumlu: uretim.user.adSoyad,
+      sorumlu: uretim.user.adSoyad || '',
       durum: uretim.durum,
       fiyat: `${uretim.teklif.toplamFiyat.toFixed(2)} €`,
     }))

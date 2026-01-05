@@ -167,7 +167,7 @@ export default function UretimTable({
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{uretim.user.adSoyad}</div>
+                    <div className="text-sm text-gray-500">{uretim.user.adSoyad || '-'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {onStatusChange ? (
