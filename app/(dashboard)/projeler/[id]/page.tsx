@@ -145,7 +145,7 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
               {proje.firma?.telefon && (
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">Telefon</label>
-                  <p className="text-gray-900">{proje.firma.telefon}</p>
+                  <p className="text-gray-900">{proje.firma?.telefon || '-'}</p>
                 </div>
               )}
               {proje.firma?.email && (
@@ -157,7 +157,7 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
               {proje.firma?.adres && (
                 <div className="col-span-2">
                   <label className="block text-sm text-gray-600 mb-1">Adres</label>
-                  <p className="text-gray-900">{proje.firma.adres}</p>
+                  <p className="text-gray-900">{proje.firma?.adres || '-'}</p>
                 </div>
               )}
             </div>
@@ -362,13 +362,13 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
                 {proje.sozlesme?.dosyaUrl && (
                   <div className="col-span-2">
                     <label className="block text-sm text-gray-600 mb-1">Sözleşme Dosyası</label>
-                    <p className="text-gray-900">{proje.sozlesme.dosyaUrl}</p>
+                    <p className="text-gray-900">{proje.sozlesme?.dosyaUrl || '-'}</p>
                   </div>
                 )}
                 {proje.sozlesme?.notlar && (
                   <div className="col-span-2">
                     <label className="block text-sm text-gray-600 mb-1">Notlar</label>
-                    <p className="text-gray-900 whitespace-pre-wrap">{proje.sozlesme.notlar}</p>
+                    <p className="text-gray-900 whitespace-pre-wrap">{proje.sozlesme?.notlar || '-'}</p>
                   </div>
                 )}
               </div>

@@ -131,7 +131,7 @@ export default function UretimDetayPage() {
         <div className="grid grid-cols-2 gap-6">
           <div>
             <h3 className="text-sm font-medium text-gray-500 mb-1">Firma</h3>
-            <p className="text-lg font-semibold text-gray-900">{uretim.teklif.firma.ad}</p>
+            <p className="text-lg font-semibold text-gray-900">{uretim.teklif.firma?.ad || 'Firma Yok'}</p>
           </div>
           <div>
             <h3 className="text-sm font-medium text-gray-500 mb-1">Durum</h3>

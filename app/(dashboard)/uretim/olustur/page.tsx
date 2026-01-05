@@ -90,7 +90,7 @@ export default function UretimOlusturPage() {
               <option value="">Teklif seçin</option>
               {onaylananTeklifler.map((teklif) => (
                 <option key={teklif.id} value={teklif.id}>
-                  {teklif.firma.ad} - {teklif.toplamFiyat.toFixed(2)} €
+                  {teklif.firma?.ad || 'Firma Yok'} - {teklif.toplamFiyat.toFixed(2)} €
                 </option>
               ))}
             </select>

@@ -64,7 +64,7 @@ export default async function TeklifDetayPage({ params }: { params: { id: string
           </div>
           <div>
             <label className="block text-sm text-gray-600 mb-1">Firma</label>
-            <p className="text-gray-900 font-medium">{teklif.firma.ad}</p>
+            <p className="text-gray-900 font-medium">{teklif.firma?.ad || 'Firma Yok'}</p>
           </div>
           {teklif.makina && (
             <div>

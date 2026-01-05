@@ -539,28 +539,28 @@ export default async function SatinAlmaDetayPage({ params }: { params: { id: str
               <div className="space-y-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-600 mb-1">Firma Adı</label>
-                  <p className="text-gray-900">{teklif.firma.ad}</p>
+                  <p className="text-gray-900">{teklif.firma?.ad || 'Firma Yok'}</p>
                 </div>
-                {teklif.firma.telefon && (
+                {teklif.firma?.telefon && (
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Telefon</label>
-                    <p className="text-gray-900">{teklif.firma.telefon}</p>
+                    <p className="text-gray-900">{teklif.firma?.telefon}</p>
                   </div>
                 )}
-                {teklif.firma.email && (
+                {teklif.firma?.email && (
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Email</label>
-                    <p className="text-gray-900">{teklif.firma.email}</p>
+                    <p className="text-gray-900">{teklif.firma?.email}</p>
                   </div>
                 )}
-                {teklif.firma.adres && (
+                {teklif.firma?.adres && (
                   <div>
                     <label className="block text-xs font-medium text-gray-600 mb-1">Adres</label>
-                    <p className="text-gray-900 text-sm">{teklif.firma.adres}</p>
+                    <p className="text-gray-900 text-sm">{teklif.firma?.adres}</p>
                   </div>
                 )}
                 <Link
-                  href={`/firma/${teklif.firma.id}`}
+                  href={`/firma/${teklif.firma?.id}`}
                   className="block mt-4 text-sm text-blue-600 hover:text-blue-800"
                 >
                   Firma Detayına Git →

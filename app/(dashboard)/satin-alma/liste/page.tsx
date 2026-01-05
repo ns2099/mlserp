@@ -282,7 +282,7 @@ export default async function SatinAlmaListePage({
                       {grup.teklif.ad || 'İsimsiz Teklif'}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      {grup.teklif.firma.ad} • {grup.satinAlmalar.length} Satın Alma • Üretim Durumu: {grup.uretim.durum}
+                      {grup.teklif.firma?.ad || 'Firma Yok'} • {grup.satinAlmalar.length} Satın Alma • Üretim Durumu: {grup.uretim.durum}
                     </p>
                   </div>
                   <div className="text-right">

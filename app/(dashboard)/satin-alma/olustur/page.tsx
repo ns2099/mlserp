@@ -338,7 +338,7 @@ export default function SatinAlmaOlusturPage() {
               <option value="">-- Üretim Seçin --</option>
               {uretimler.map((uretim) => (
                 <option key={uretim.id} value={uretim.id}>
-                  {uretim.teklif.ad || 'İsimsiz Teklif'} - {uretim.teklif.firma.ad}
+                  {uretim.teklif.ad || 'İsimsiz Teklif'} - {uretim.teklif.firma?.ad || 'Firma Yok'}
                 </option>
               ))}
             </select>
@@ -359,7 +359,7 @@ export default function SatinAlmaOlusturPage() {
                       </div>
                       <div>
                         <span className="text-gray-600">Firma:</span>{' '}
-                        <span className="font-medium">{selectedUretim.teklif.firma.ad}</span>
+                        <span className="font-medium">{selectedUretim.teklif.firma?.ad || 'Firma Yok'}</span>
                       </div>
                     </div>
                   </div>

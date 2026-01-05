@@ -155,7 +155,7 @@ export default function TeklifTable({ teklifler, onSelectionChange }: TeklifTabl
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
-                      {teklif.firma.ad}
+                      {teklif.firma?.ad || 'Firma Yok'}
                     </div>
                     {teklif.makina && (
                       <div className="text-xs text-gray-500">

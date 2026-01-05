@@ -28,7 +28,7 @@ export default async function UretimDevamEdenPage() {
       id: u.teklif.id,
       ad: (u.teklif as any).ad || null,
       firma: {
-        ad: u.teklif.firma.ad,
+        ad: u.teklif.firma?.ad || 'Firma Yok',
       },
       toplamFiyat: u.teklif.toplamFiyat,
     },

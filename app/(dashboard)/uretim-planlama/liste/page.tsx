@@ -119,7 +119,7 @@ export default async function UretimPlanlamaListePage() {
                       {grup.teklif.ad || 'İsimsiz Teklif'}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      {grup.teklif.firma.ad} • {grup.adimlar.length} Adım
+                      {grup.teklif.firma?.ad || 'Firma Yok'} • {grup.adimlar.length} Adım
                     </p>
                   </div>
                   <div className="text-right">

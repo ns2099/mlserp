@@ -51,10 +51,10 @@ export async function PUT(
     await createAuditLog({
       tablo: 'Teklif',
       kayitId: params.id,
-      kayitAdi: `${teklif.firma.ad} - ${teklif.toplamFiyat.toFixed(2)} €`,
+      kayitAdi: `${teklif.firma?.ad || 'Firma Yok'} - ${teklif.toplamFiyat.toFixed(2)} €`,
       islem: 'Güncellendi',
       kullaniciId: session.id,
-      aciklama: generateAuditDescription('Teklif', 'Güncellendi', `${teklif.firma.ad} - ${teklif.toplamFiyat.toFixed(2)} €`, degisiklikler),
+      aciklama: generateAuditDescription('Teklif', 'Güncellendi', `${teklif.firma?.ad || 'Firma Yok'} - ${teklif.toplamFiyat.toFixed(2)} €`, degisiklikler),
       eskiDeger: eskiTeklif,
       yeniDeger: teklif,
     })

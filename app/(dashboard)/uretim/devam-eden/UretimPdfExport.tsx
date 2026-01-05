@@ -40,7 +40,7 @@ export default function UretimPdfExport({
 
     const rows = exportUretimler.map((uretim) => ({
       teklif: uretim.teklif.ad || '-',
-      firma: uretim.teklif.firma.ad,
+      firma: uretim.teklif.firma?.ad || 'Firma Yok',
       baslangic: new Date(uretim.baslangicTarihi).toLocaleDateString('tr-TR'),
       bitis: uretim.bitisTarihi
         ? new Date(uretim.bitisTarihi).toLocaleDateString('tr-TR')

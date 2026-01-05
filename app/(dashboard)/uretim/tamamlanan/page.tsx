@@ -26,7 +26,7 @@ export default async function UretimTamamlananPage() {
       id: u.teklif.id,
       ad: u.teklif.ad || null,
       firma: {
-        ad: u.teklif.firma.ad,
+        ad: u.teklif.firma?.ad || 'Firma Yok',
       },
       toplamFiyat: u.teklif.toplamFiyat,
     },

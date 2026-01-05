@@ -60,7 +60,7 @@ export default async function OnaylananUrunlerPage() {
                   <tr key={uretim.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {uretim.teklif.firma.ad}
+                        {uretim.teklif.firma?.ad || 'Firma Yok'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

@@ -172,7 +172,7 @@ export default function OdemeOlusturPage() {
               <option value="">Teklif seçin (opsiyonel)</option>
               {teklifler.map((teklif) => (
                 <option key={teklif.id} value={teklif.id}>
-                  {teklif.ad || 'İsimsiz Teklif'} - {teklif.firma.ad}
+                  {teklif.ad || 'İsimsiz Teklif'} - {teklif.firma?.ad || 'Firma Yok'}
                 </option>
               ))}
             </select>

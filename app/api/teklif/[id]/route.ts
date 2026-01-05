@@ -94,7 +94,7 @@ export async function PUT(
     // Değişiklikleri tespit et
     const degisiklikler: { alan: string; eski: any; yeni: any }[] = []
     if (eskiTeklif.firmaId !== firmaId) {
-      degisiklikler.push({ alan: 'firma', eski: eskiTeklif.firma.ad, yeni: firma?.ad || '' })
+      degisiklikler.push({ alan: 'firma', eski: eskiTeklif.firma?.ad || '', yeni: firma?.ad || '' })
     }
     if (eskiTeklif.toplamFiyat !== toplamFiyat) {
       degisiklikler.push({ alan: 'toplamFiyat', eski: eskiTeklif.toplamFiyat, yeni: toplamFiyat })
@@ -172,10 +172,10 @@ export async function DELETE(
     await createAuditLog({
       tablo: 'Teklif',
       kayitId: params.id,
-      kayitAdi: `${teklif.firma.ad} - ${teklif.toplamFiyat.toFixed(2)} €`,
+      kayitAdi: `${teklif.firma?.ad || 'Firma Yok'} - ${teklif.toplamFiyat.toFixed(2)} €`,
       islem: 'Silindi',
       kullaniciId: session.id,
-      aciklama: generateAuditDescription('Teklif', 'Silindi', `${teklif.firma.ad} - ${teklif.toplamFiyat.toFixed(2)} €`),
+      aciklama: generateAuditDescription('Teklif', 'Silindi', `${teklif.firma?.ad || 'Firma Yok'} - ${teklif.toplamFiyat.toFixed(2)} €`),
     })
 
     return NextResponse.json({ message: 'Teklif silindi' })

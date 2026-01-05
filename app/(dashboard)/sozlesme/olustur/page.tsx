@@ -165,7 +165,7 @@ export default function SozlesmeOlusturPage() {
               <option value="">-- Teklif Seçin --</option>
               {onaylananTeklifler.map((teklif) => (
                 <option key={teklif.id} value={teklif.id}>
-                  {teklif.ad || 'İsimsiz Teklif'} - {teklif.firma.ad} -{' '}
+                  {teklif.ad || 'İsimsiz Teklif'} - {teklif.firma?.ad || 'Firma Yok'} -{' '}
                   {new Intl.NumberFormat('tr-TR', {
                     style: 'currency',
                     currency: 'TRY',
@@ -191,7 +191,7 @@ export default function SozlesmeOlusturPage() {
                 </div>
                 <div>
                   <span className="text-gray-600">Firma:</span>{' '}
-                  <span className="font-medium">{selectedTeklif.firma.ad}</span>
+                  <span className="font-medium">{selectedTeklif.firma?.ad || 'Firma Yok'}</span>
                 </div>
                 <div>
                   <span className="text-gray-600">Toplam Fiyat:</span>{' '}

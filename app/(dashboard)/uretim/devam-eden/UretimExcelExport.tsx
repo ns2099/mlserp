@@ -41,7 +41,7 @@ export default function UretimExcelExport({
 
     const data = exportUretimler.map((uretim) => ({
       'Teklif Adı': uretim.teklif.ad || '',
-      'Firma': uretim.teklif.firma.ad,
+      'Firma': uretim.teklif.firma?.ad || 'Firma Yok',
       'Durum': uretim.durum,
       'Başlangıç Tarihi': uretim.baslangicTarihi,
       'Bitiş Tarihi': uretim.bitisTarihi || '',

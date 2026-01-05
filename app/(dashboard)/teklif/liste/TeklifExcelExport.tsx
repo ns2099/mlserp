@@ -59,7 +59,7 @@ export default function TeklifExcelExport({
       // Ana teklif bilgisi
       data.push({
         'Teklif Adı': teklif.ad || '',
-        'Firma': teklif.firma.ad,
+        'Firma': teklif.firma?.ad || 'Firma Yok',
         'Makina': teklif.makina?.ad || '',
         'Durum': durumLabels[teklif.durum],
         'Toplam Fiyat': teklif.toplamFiyat.toFixed(2),
