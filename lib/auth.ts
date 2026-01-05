@@ -89,11 +89,11 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (token && session.user) {
-        (session.user as any).id = String(token.id)
-        (session.user as any).username = String(token.username || '')
-        (session.user as any).role = String(token.role || '')
+        (session.user as any).id = token.id as any
+        (session.user as any).username = token.username as any
+        (session.user as any).role = token.role as any
       }
       return session
     }
