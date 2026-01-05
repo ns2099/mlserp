@@ -11,15 +11,15 @@ interface Teklif {
   ad: string | null
   durum: number
   toplamFiyat: number
-  createdAt: string
+  createdAt: Date | string
   firma: {
     ad: string
-  }
+  } | null
   makina: {
     ad: string
   } | null
   user: {
-    adSoyad: string
+    adSoyad: string | null
   }
   teklifUrunler?: Array<{
     urunAdi: string

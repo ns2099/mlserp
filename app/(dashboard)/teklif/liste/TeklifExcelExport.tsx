@@ -15,10 +15,10 @@ interface Teklif {
   ad: string | null
   durum: number
   toplamFiyat: number
-  createdAt: string
+  createdAt: Date | string
   firma: {
     ad: string
-  }
+  } | null
   makina: {
     ad: string
   } | null
