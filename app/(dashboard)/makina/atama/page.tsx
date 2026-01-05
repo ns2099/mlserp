@@ -77,14 +77,18 @@ export default async function MakinaAtamaPage() {
                       {makina.makinaAtamalar.map((atama) => (
                         <tr key={atama.id}>
                           <td className="px-4 py-2 text-sm text-gray-900">
-                            {atama.uretim.teklif.firma.ad}
+                            {atama.uretim.teklif.firma?.ad || 'Firma Yok'}
                           </td>
                           <td className="px-4 py-2 text-sm text-gray-500">
-                            {new Date(atama.baslangicTarihi).toLocaleDateString('tr-TR')}
+                            {atama.baslangicTarihi instanceof Date
+                              ? atama.baslangicTarihi.toLocaleDateString('tr-TR')
+                              : new Date(atama.baslangicTarihi).toLocaleDateString('tr-TR')}
                           </td>
                           <td className="px-4 py-2 text-sm text-gray-500">
                             {atama.bitisTarihi
-                              ? new Date(atama.bitisTarihi).toLocaleDateString('tr-TR')
+                              ? atama.bitisTarihi instanceof Date
+                                ? atama.bitisTarihi.toLocaleDateString('tr-TR')
+                                : new Date(atama.bitisTarihi).toLocaleDateString('tr-TR')
                               : 'Devam ediyor'}
                           </td>
                         </tr>

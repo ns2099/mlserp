@@ -6,16 +6,16 @@ import { exportToExcel } from '@/lib/excel-export'
 interface Kullanici {
   id: string
   username: string
-  adSoyad: string
+  adSoyad: string | null
   yetki: string
-  createdAt: string
+  createdAt: Date | string
 }
 
 export default function KullaniciExcelExport({ kullanicilar }: { kullanicilar: Kullanici[] }) {
   const handleExport = () => {
     const data = kullanicilar.map((kullanici) => ({
       'Kullanıcı Adı': kullanici.username,
-      'Ad Soyad': kullanici.adSoyad,
+      'Ad Soyad': kullanici.adSoyad || '',
       'Yetki': kullanici.yetki,
       'Oluşturulma Tarihi': new Date(kullanici.createdAt).toLocaleDateString('tr-TR'),
     }))

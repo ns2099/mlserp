@@ -14,7 +14,7 @@ interface Makina {
   aciklama: string | null
   fotograf: string | null
   toplamMaliyet: number
-  createdAt: string
+  createdAt: Date | string
   makinaBilesenleri: Array<{
     ad: string
     miktar: number

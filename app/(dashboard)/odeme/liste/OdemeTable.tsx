@@ -20,7 +20,7 @@ interface Odeme {
     ad: string | null
     firma: {
       ad: string
-    }
+    } | null | null
   } | null
   user: {
     id: string
@@ -152,7 +152,7 @@ export default function OdemeTable({ odemeler, onSelectionChange }: OdemeTablePr
                     href={`/teklif/${odeme.teklif.id}`}
                     className="text-blue-600 hover:text-blue-800"
                   >
-                    {odeme.teklif.ad || odeme.teklif.firma.ad}
+                    {odeme.teklif.ad || odeme.teklif.firma?.ad || 'Firma Yok'}
                   </Link>
                 ) : (
                   <span className="text-gray-400">-</span>

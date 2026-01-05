@@ -140,28 +140,28 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm text-gray-600 mb-1">Firma Adı</label>
-                <p className="text-gray-900 font-medium">{proje.firma.ad}</p>
+                <p className="text-gray-900 font-medium">{proje.firma?.ad || 'Firma Yok'}</p>
               </div>
-              {proje.firma.telefon && (
+              {proje.firma?.telefon && (
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">Telefon</label>
                   <p className="text-gray-900">{proje.firma.telefon}</p>
                 </div>
               )}
-              {proje.firma.email && (
+              {proje.firma?.email && (
                 <div>
                   <label className="block text-sm text-gray-600 mb-1">Email</label>
-                  <p className="text-gray-900">{proje.firma.email}</p>
+                  <p className="text-gray-900">{proje.firma?.email || '-'}</p>
                 </div>
               )}
-              {proje.firma.adres && (
+              {proje.firma?.adres && (
                 <div className="col-span-2">
                   <label className="block text-sm text-gray-600 mb-1">Adres</label>
                   <p className="text-gray-900">{proje.firma.adres}</p>
                 </div>
               )}
             </div>
-            {proje.firma.yetkiliKisiler.length > 0 && (
+            {proje.firma?.yetkiliKisiler && proje.firma.yetkiliKisiler.length > 0 && (
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <h3 className="text-sm font-semibold text-gray-900 mb-2">Yetkili Kişiler</h3>
                 <div className="space-y-2">

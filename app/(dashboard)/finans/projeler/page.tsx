@@ -121,7 +121,7 @@ export default async function FinansProjelerPage() {
                 >
                   {proje.teklif.ad || 'İsimsiz Proje'}
                 </Link>
-                <p className="text-sm text-gray-600 mt-1">{proje.teklif.firma.ad}</p>
+                <p className="text-sm text-gray-600 mt-1">{proje.teklif.firma?.ad || 'Firma Yok'}</p>
               </div>
               <span
                 className={`px-3 py-1 text-sm font-semibold rounded-full ${

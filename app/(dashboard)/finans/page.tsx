@@ -305,7 +305,7 @@ export default async function FinansPage() {
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {proje.teklif.firma.ad}
+                    {proje.teklif.firma?.ad || 'Firma Yok'}
                   </td>
                   <td className="px-4 py-3 text-right font-medium text-green-600">
                     {formatCurrency(proje.gelir)}

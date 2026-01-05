@@ -138,7 +138,7 @@ export default async function PlanlamaPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900 mb-1">
-                            {planlama.teklif.firma.ad}
+                            {planlama.teklif.firma?.ad || 'Firma Yok'}
                           </div>
                           <div className="text-xs text-gray-500">
                             Başlangıç: {formatDate(planlama.baslangicTarihi)} • Bitiş: {formatDate(planlama.bitisTarihi)}
@@ -191,7 +191,7 @@ export default async function PlanlamaPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900 mb-1">
-                            {planlama.teklif.firma.ad}
+                            {planlama.teklif.firma?.ad || 'Firma Yok'}
                           </div>
                           <div className="text-xs text-gray-500">
                             Başlangıç: {formatDate(planlama.baslangicTarihi)} • Bitiş: {formatDate(planlama.bitisTarihi)}
@@ -244,7 +244,7 @@ export default async function PlanlamaPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900 mb-1">
-                            {planlama.teklif.firma.ad}
+                            {planlama.teklif.firma?.ad || 'Firma Yok'}
                           </div>
                           <div className="text-xs text-gray-500">
                             Başlangıç: {formatDate(planlama.baslangicTarihi)} • Bitiş: {formatDate(planlama.bitisTarihi)}

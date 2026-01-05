@@ -10,7 +10,7 @@ interface Makina {
   model: string | null
   durum: string
   toplamMaliyet: number
-  createdAt: string
+  createdAt: Date | string
   makinaBilesenleri?: Array<{
     ad: string
     miktar: number

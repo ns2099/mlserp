@@ -95,7 +95,7 @@ export default async function ProjelerPage() {
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     {proje.ad || 'İsimsiz Proje'}
                   </h3>
-                  <p className="text-sm text-gray-600">{proje.firma.ad}</p>
+                  <p className="text-sm text-gray-600">{proje.firma?.ad || 'Firma Yok'}</p>
                 </div>
                 <span
                   className={`px-3 py-1 text-xs font-semibold rounded-full ${

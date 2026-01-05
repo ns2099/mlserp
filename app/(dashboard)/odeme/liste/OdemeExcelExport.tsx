@@ -15,7 +15,7 @@ interface Odeme {
     ad: string | null
     firma: {
       ad: string
-    }
+    } | null
   } | null
   user: {
     adSoyad: string | null
@@ -60,7 +60,7 @@ export default function OdemeExcelExport({
         new Date(odeme.odemeTarihi).toLocaleDateString('tr-TR'),
         odeme.odemeYontemi,
         odeme.teklif?.ad || '-',
-        odeme.teklif?.firma.ad || '-',
+        odeme.teklif?.firma?.ad || '-',
         odeme.user.adSoyad || odeme.user.username,
         odeme.aciklama || '-',
       ])
