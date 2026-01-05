@@ -1,6 +1,6 @@
-import { prisma } from '@/lib/prisma'
-import { BarChart3, Users } from 'lucide-react'
-import { formatCurrency } from '@/lib/utils'
+'use client'
+
+import { useEffect, useState } from 'react'
 import {
   BarChart,
   Bar,
@@ -12,19 +12,34 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-export default async function KullaniciRaporuPage() {
-  const kullanicilar = await prisma.user.findMany({
-    include: {
-      teklifler: true,
-      uretimler: true,
-    },
-  })
+export default function KullaniciRaporuPage() {
+  const [kullanicilar, setKullanicilar] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const chartData = kullanicilar.map((k) => ({
-    name: k.adSoyad,
-    teklif: k.teklifler.length,
-    uretim: k.uretimler.length,
+  useEffect(() => {
+    fetch('/api/kullanici/rapor')
+      .then((res) => res.json())
+      .then((data) => {
+        setKullanicilar(data || [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [])
+
+  const chartData = kullanicilar.map((k: any) => ({
+    name: k.adSoyad || k.username || 'İsimsiz',
+    teklif: k.teklifler?.length || 0,
+    uretim: k.uretimler?.length || 0,
   }))
+
+  if (loading) {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">Kullanıcı Raporu</h1>
+        <p>Yükleniyor...</p>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -79,16 +94,16 @@ export default async function KullaniciRaporuPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {kullanicilar.map((kullanici) => (
+              {kullanicilar.map((kullanici: any) => (
                 <tr key={kullanici.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{kullanici.adSoyad}</div>
+                    <div className="text-sm font-medium text-gray-900">{kullanici.adSoyad || kullanici.username || 'İsimsiz'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{kullanici.teklifler.length}</div>
+                    <div className="text-sm text-gray-500">{kullanici.teklifler?.length || 0}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{kullanici.uretimler.length}</div>
+                    <div className="text-sm text-gray-500">{kullanici.uretimler?.length || 0}</div>
                   </td>
                 </tr>
               ))}
