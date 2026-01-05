@@ -45,9 +45,17 @@ export default function UretimPlanlamaOlusturPage() {
   const [saving, setSaving] = useState(false)
   const [onaylananTeklifler, setOnaylananTeklifler] = useState<Teklif[]>([])
   const [kullanicilar, setKullanicilar] = useState<Kullanici[]>([])
-  const [makinalar, setMakinalar] = useState<Makina[]>([])
   const [selectedTeklifId, setSelectedTeklifId] = useState('')
   const [adimlar, setAdimlar] = useState<PlanlamaAdimi[]>([])
+  
+  // Sabit tezgah/makina listesi
+  const tezgahlar = [
+    'CNC Tezgah 1',
+    'CNC Tezgah 2',
+    'CNC Tezgah 3',
+    'CNC Tezgah 4',
+    'CNC Tezgah 5',
+  ]
 
   useEffect(() => {
     // URL'den teklifId al
@@ -77,16 +85,6 @@ export default function UretimPlanlamaOlusturPage() {
         }
       })
       .catch(() => {})
-
-    // Makinaları yükle
-    fetch('/api/makina')
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setMakinalar(data)
-        }
-      })
-      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 
@@ -102,7 +100,7 @@ export default function UretimPlanlamaOlusturPage() {
                 adimAdi: adim.adimAdi,
                 siraNo: adim.siraNo,
                 kullaniciId: adim.kullaniciId,
-                makinaId: adim.makinaId || '',
+                makinaId: adim.tezgahAdi || adim.makinaId || '', // Önce tezgahAdi, yoksa makinaId
                 baslangicTarihi: adim.baslangicTarihi.split('T')[0] + 'T' + adim.baslangicTarihi.split('T')[1]?.split('.')[0] || '',
                 bitisTarihi: adim.bitisTarihi.split('T')[0] + 'T' + adim.bitisTarihi.split('T')[1]?.split('.')[0] || '',
                 isMaliyeti: adim.isMaliyeti,
@@ -359,9 +357,9 @@ export default function UretimPlanlamaOlusturPage() {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         >
                           <option value="">-- Seçin (Opsiyonel) --</option>
-                          {makinalar.map((makina) => (
-                            <option key={makina.id} value={makina.id}>
-                              {makina.ad} {makina.model ? `(${makina.model})` : ''}
+                          {tezgahlar.map((tezgah) => (
+                            <option key={tezgah} value={tezgah}>
+                              {tezgah}
                             </option>
                           ))}
                         </select>

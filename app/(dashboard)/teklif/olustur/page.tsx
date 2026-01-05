@@ -201,10 +201,7 @@ export default function TeklifOlusturPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.firmaId || urunler.length === 0) {
-      alert('Lütfen firma seçin ve en az bir ürün ekleyin')
-      return
-    }
+    // Zorunlu alan kontrolü kaldırıldı - tüm alanlar opsiyonel
 
     setLoading(true)
 
@@ -241,8 +238,8 @@ export default function TeklifOlusturPage() {
           toplamFiyat: Number(toplamFiyatNet) || 0,
           aciklama: JSON.stringify(meta),
           teklifTarihi: formData.teklifTarihi || null,
-          urunler: urunler
-            .filter((u) => u.urunAdi && u.urunAdi.trim() !== '')
+          urunler: (urunler || [])
+            .filter((u) => u && u.urunAdi && String(u.urunAdi).trim() !== '')
             .map((u) => ({
               urunAdi: String(u.urunAdi).trim(),
               miktar: parseInt(String(u.miktar || 1), 10),

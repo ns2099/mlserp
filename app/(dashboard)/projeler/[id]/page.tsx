@@ -691,3 +691,9 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
 
 
 
+
+
+
+
+
+

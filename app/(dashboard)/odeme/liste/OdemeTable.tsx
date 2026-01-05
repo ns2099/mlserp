@@ -192,3 +192,9 @@ export default function OdemeTable({ odemeler, onSelectionChange }: OdemeTablePr
 
 
 
+
+
+
+
+
+

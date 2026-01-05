@@ -44,27 +44,37 @@ export async function POST(request: NextRequest) {
     
     const { ad, firmaId, makinaId, toplamFiyat, aciklama, teklifTarihi, urunler } = body
 
-    if (!firmaId || !urunler || urunler.length === 0) {
-      return NextResponse.json(
-        { error: 'Firma ve ürünler gerekli' },
-        { status: 400 }
-      )
-    }
-
+    // Ürünler opsiyonel, ama varsa boş olmamalı
+    const urunlerList = Array.isArray(urunler) ? urunler : []
+    
     console.log('Session ID:', session.id)
     console.log('Firma ID:', firmaId)
-    console.log('Ürün sayısı:', urunler.length)
+    console.log('Ürün sayısı:', urunlerList.length)
+
+    // User kontrolü - session.id'nin veritabanında olup olmadığını kontrol et
+    const user = await prisma.user.findUnique({
+      where: { id: session.id },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.' }, { status: 404 })
+    }
 
     // Veri tiplerini doğrula ve dönüştür
     const toplamFiyatNum = typeof toplamFiyat === 'string' ? parseFloat(toplamFiyat) : Number(toplamFiyat) || 0
 
-    // Firma bilgisini al
-    const firma = await prisma.firma.findUnique({
-      where: { id: firmaId },
-    })
+    // Firma kontrolü - eğer firmaId varsa kontrol et
+    let validFirmaId: string | null = null
+    let firma: any = null
+    if (firmaId && String(firmaId).trim() !== '') {
+      firma = await prisma.firma.findUnique({
+        where: { id: String(firmaId).trim() },
+      })
 
-    if (!firma) {
-      return NextResponse.json({ error: 'Firma bulunamadı' }, { status: 404 })
+      if (!firma) {
+        return NextResponse.json({ error: 'Firma bulunamadı' }, { status: 404 })
+      }
+      validFirmaId = firma.id
     }
 
     // Makina kontrolü (eğer makinaId varsa)
@@ -84,38 +94,27 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Ürünleri doğrula ve dönüştür
-    const validatedUrunler = urunler.map((u: any) => {
-      if (!u.urunAdi || String(u.urunAdi).trim() === '') {
-        throw new Error('Ürün adı boş olamaz')
-      }
-      const miktar = parseInt(String(u.miktar || 1), 10)
-      const birimFiyat = parseFloat(String(u.birimFiyat || 0))
-      const toplamFiyatUrun = parseFloat(String(u.toplamFiyat || 0))
-      
-      if (isNaN(miktar) || miktar < 1) {
-        throw new Error('Miktar geçerli bir sayı olmalıdır (minimum 1)')
-      }
-      if (isNaN(birimFiyat) || birimFiyat < 0) {
-        throw new Error('Birim fiyat geçerli bir sayı olmalıdır')
-      }
-      if (isNaN(toplamFiyatUrun) || toplamFiyatUrun < 0) {
-        throw new Error('Toplam fiyat geçerli bir sayı olmalıdır')
-      }
+    // Ürünleri doğrula ve dönüştür - sadece geçerli olanları al
+    const validatedUrunler = urunlerList
+      .filter((u: any) => u && u.urunAdi && String(u.urunAdi).trim() !== '')
+      .map((u: any) => {
+        const miktar = parseInt(String(u.miktar || 1), 10)
+        const birimFiyat = parseFloat(String(u.birimFiyat || 0))
+        const toplamFiyatUrun = parseFloat(String(u.toplamFiyat || 0))
 
-      return {
-        urunAdi: String(u.urunAdi).trim(),
-        miktar,
-        birimFiyat,
-        toplamFiyat: toplamFiyatUrun,
-        aciklama: u.aciklama && String(u.aciklama).trim() !== '' ? String(u.aciklama).trim() : null,
-      }
-    })
+        return {
+          urunAdi: String(u.urunAdi).trim(),
+          miktar: isNaN(miktar) || miktar < 1 ? 1 : miktar,
+          birimFiyat: isNaN(birimFiyat) || birimFiyat < 0 ? 0 : birimFiyat,
+          toplamFiyat: isNaN(toplamFiyatUrun) || toplamFiyatUrun < 0 ? 0 : toplamFiyatUrun,
+          aciklama: u.aciklama && String(u.aciklama).trim() !== '' ? String(u.aciklama).trim() : null,
+        }
+      })
 
     // Veri hazırlığı - tüm değerleri kontrol et
     const teklifData: {
       ad: string | null
-      firmaId: string
+      firmaId: string | null
       userId: string
       toplamFiyat: number
       durum: number
@@ -124,7 +123,7 @@ export async function POST(request: NextRequest) {
       teklifTarihi?: Date | null
     } = {
       ad: ad && String(ad).trim() !== '' ? String(ad).trim() : null,
-      firmaId: String(firmaId).trim(),
+      firmaId: validFirmaId,
       userId: String(session.id).trim(),
       toplamFiyat: Number(toplamFiyatNum),
       durum: 1, // Bekleyen
@@ -203,13 +202,14 @@ export async function POST(request: NextRequest) {
 
     // Audit log oluştur
     if (teklifWithUrunler) {
+      const firmaAdi = firma?.ad || 'Firma Yok'
       await createAuditLog({
         tablo: 'Teklif',
         kayitId: teklifWithUrunler.id,
-        kayitAdi: `${firma.ad} - ${toplamFiyatNum.toFixed(2)} €`,
+        kayitAdi: `${firmaAdi} - ${toplamFiyatNum.toFixed(2)} €`,
         islem: 'Oluşturuldu',
         kullaniciId: session.id,
-        aciklama: generateAuditDescription('Teklif', 'Oluşturuldu', `${firma.ad} - ${toplamFiyatNum.toFixed(2)} €`),
+        aciklama: generateAuditDescription('Teklif', 'Oluşturuldu', `${firmaAdi} - ${toplamFiyatNum.toFixed(2)} €`),
         yeniDeger: JSON.stringify(teklifWithUrunler),
       })
 

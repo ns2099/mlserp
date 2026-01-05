@@ -91,18 +91,26 @@ export async function POST(request: NextRequest) {
 
     // Yeni adımları oluştur
     const olusturulanAdimlar = await prisma.uretimPlanlamaAdimi.createMany({
-      data: adimlar.map((adim: any) => ({
-        teklifId,
-        adimAdi: adim.adimAdi,
-        siraNo: adim.siraNo,
-        kullaniciId: adim.kullaniciId,
-        makinaId: adim.makinaId || null,
-        baslangicTarihi: new Date(adim.baslangicTarihi),
-        bitisTarihi: new Date(adim.bitisTarihi),
-        isMaliyeti: adim.isMaliyeti || 0,
-        durum: adim.durum || 'Planlandı',
-        aciklama: adim.aciklama || null,
-      })),
+      data: adimlar.map((adim: any) => {
+        // makinaId bir CUID/UUID formatında mı kontrol et (Prisma CUID genellikle 'c' ile başlar ve 25 karakter)
+        // Eğer "CNC Tezgah" gibi bir string ise tezgahAdi olarak kaydet
+        const makinaIdStr = adim.makinaId ? String(adim.makinaId).trim() : ''
+        const isMakinaId = makinaIdStr && /^c[a-z0-9]{24}$/.test(makinaIdStr)
+        
+        return {
+          teklifId,
+          adimAdi: adim.adimAdi,
+          siraNo: adim.siraNo,
+          kullaniciId: adim.kullaniciId,
+          makinaId: isMakinaId ? makinaIdStr : null,
+          tezgahAdi: !isMakinaId && makinaIdStr ? makinaIdStr : null,
+          baslangicTarihi: new Date(adim.baslangicTarihi),
+          bitisTarihi: new Date(adim.bitisTarihi),
+          isMaliyeti: adim.isMaliyeti || 0,
+          durum: adim.durum || 'Planlandı',
+          aciklama: adim.aciklama || null,
+        }
+      }),
     })
 
     // Oluşturulan adımları tekrar getir
@@ -126,6 +134,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
+
+
+
 
 
 

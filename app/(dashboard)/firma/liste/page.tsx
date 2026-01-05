@@ -86,7 +86,7 @@ export default async function FirmaListePage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <Link
-                          href={`/firma/${firma.id}/duzenle`}
+                          href={`/firma/${firma.id}`}
                           className="inline-flex items-center gap-2 px-3 py-1 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
                         >
                           <Edit size={16} />
