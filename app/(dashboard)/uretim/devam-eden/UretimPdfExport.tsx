@@ -13,11 +13,11 @@ interface Uretim {
     ad: string | null
     firma: {
       ad: string
-    }
+    } | null
     toplamFiyat: number
   }
   user: {
-    adSoyad: string
+    adSoyad: string | null
   }
 }
 
