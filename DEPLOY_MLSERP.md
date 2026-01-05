@@ -20,6 +20,38 @@ git push -u origin main
 
 **ÖNEMLİ:** `.env` dosyasını `.gitignore`'a ekleyin (zaten ekli olmalı)
 
+## 🌐 Siteye Erişim
+
+### Şu An Erişim:
+Railway Dashboard → Projeniz → **Settings** → **Networking** bölümünde Railway'in otomatik oluşturduğu URL'i görebilirsiniz:
+- Örnek: `https://your-project.up.railway.app`
+
+### Custom Domain (mlserp.com) Bağlama:
+
+1. **Railway Dashboard'da:**
+   - Projenize tıklayın
+   - **Settings** → **Networking** sekmesine gidin
+   - **Custom Domain** bölümünde **"Add Custom Domain"** tıklayın
+   - `mlserp.com` yazın ve ekleyin
+   - Railway size bir CNAME kaydı verecek (örnek: `xxxxx.up.railway.app`)
+
+2. **Natrod DNS Panelinde:**
+   - DNS yönetim paneline girin
+   - Şu kayıtları ekleyin:
+     ```
+     Type: CNAME
+     Name: @ (veya boş)
+     Value: Railway'in verdiği CNAME değeri
+     
+     Type: CNAME  
+     Name: www
+     Value: Railway'in verdiği CNAME değeri
+     ```
+
+3. **DNS yayılması:** 5-30 dakika sürebilir
+
+4. **SSL Sertifikası:** Railway otomatik olarak Let's Encrypt SSL sertifikası sağlar
+
 ## 🚂 Railway ile Deploy (5 Dakika)
 
 ### Adım 1: Railway Hesabı Oluşturun
