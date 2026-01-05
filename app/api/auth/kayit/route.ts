@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       } else {
         // Email onaylanmamış, yeni token gönder
         const crypto = await import('crypto')
-        const token = crypto.default.randomBytes(32).toString('hex')
+        const token = crypto.randomBytes(32).toString('hex')
         const tokenExpiry = new Date()
         tokenExpiry.setHours(tokenExpiry.getHours() + 24) // 24 saat geçerli
 
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     // Yeni kullanıcı oluştur
     const crypto = await import('crypto')
-    const token = crypto.default.randomBytes(32).toString('hex')
+    const token = crypto.randomBytes(32).toString('hex')
     const tokenExpiry = new Date()
     tokenExpiry.setHours(tokenExpiry.getHours() + 24) // 24 saat geçerli
 

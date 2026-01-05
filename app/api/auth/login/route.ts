@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     // İlk giriş kontrolü - eğer ilk giriş yapılmamışsa şifre sıfırlama token'ı oluştur ve email gönder
     if (!user.ilkGirisVarmi && user.email) {
       const crypto = await import('crypto')
-      const token = crypto.default.randomBytes(32).toString('hex')
+      const token = crypto.randomBytes(32).toString('hex')
       const tokenExpiry = new Date()
       tokenExpiry.setHours(tokenExpiry.getHours() + 24) // 24 saat geçerli
 

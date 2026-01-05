@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/session'
 import { sendPasswordResetEmail } from '@/lib/email'
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 
 // İlk giriş için şifre sıfırlama token'ı oluştur ve email gönder
 export async function POST(request: NextRequest) {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Token oluştur
-    const token = crypto.default.randomBytes(32).toString('hex')
+    const token = crypto.randomBytes(32).toString('hex')
     const tokenExpiry = new Date()
     tokenExpiry.setHours(tokenExpiry.getHours() + 24) // 24 saat geçerli
 
