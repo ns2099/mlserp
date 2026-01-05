@@ -23,7 +23,7 @@ interface Teklif {
     ad: string
   } | null
   user: {
-    adSoyad: string
+    adSoyad: string | null
   }
   teklifUrunler?: TeklifUrun[]
 }
