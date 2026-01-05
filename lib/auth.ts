@@ -48,7 +48,7 @@ export const authOptions: NextAuthOptions = {
         if (!user.ilkGirisVarmi && user.email) {
           // İlk giriş için token oluştur ve email gönder
           const crypto = await import('crypto')
-          const token = crypto.default.randomBytes(32).toString('hex')
+          const token = crypto.randomBytes(32).toString('hex')
           const tokenExpiry = new Date()
           tokenExpiry.setHours(tokenExpiry.getHours() + 24)
 
