@@ -107,7 +107,7 @@ export default function SozlesmeBölümü({ teklifId }: SozlesmeBölümüProps) 
   const handleDeleteFile = async () => {
     if (confirm('Dosyayı silmek istediğinize emin misiniz?')) {
       setDosyaUrl(null)
-      await saveSozlesme(null, notlar)
+      await saveSozlesme(undefined, notlar)
     }
   }
 
