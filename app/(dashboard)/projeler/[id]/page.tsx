@@ -352,20 +352,20 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
                   <h2 className="text-xl font-semibold text-gray-900">Sözleşme Bilgileri</h2>
                 </div>
                 <Link
-                  href={`/sozlesme/${proje.sozlesme.id}`}
+                  href={`/sozlesme/${proje.sozlesme?.id}`}
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
                   Detayları Gör →
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                {proje.sozlesme.dosyaYolu && (
+                {proje.sozlesme?.dosyaUrl && (
                   <div className="col-span-2">
                     <label className="block text-sm text-gray-600 mb-1">Sözleşme Dosyası</label>
-                    <p className="text-gray-900">{proje.sozlesme.dosyaYolu}</p>
+                    <p className="text-gray-900">{proje.sozlesme.dosyaUrl}</p>
                   </div>
                 )}
-                {proje.sozlesme.notlar && (
+                {proje.sozlesme?.notlar && (
                   <div className="col-span-2">
                     <label className="block text-sm text-gray-600 mb-1">Notlar</label>
                     <p className="text-gray-900 whitespace-pre-wrap">{proje.sozlesme.notlar}</p>
@@ -643,7 +643,7 @@ export default async function ProjeDetayPage({ params }: { params: { id: string 
               </Link>
               {proje.sozlesme && (
                 <Link
-                  href={`/sozlesme/${proje.sozlesme.id}`}
+                  href={`/sozlesme/${proje.sozlesme?.id}`}
                   className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-lg"
                 >
                   <FileCheck size={16} className="inline mr-2" />
