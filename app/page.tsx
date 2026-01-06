@@ -1,13 +1,7 @@
-import { getSession } from '@/lib/session'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  const session = await getSession()
-  
-  if (session) {
-    redirect('/dashboard')
-  } else {
-    redirect('/login')
-  }
+  // Ana sayfaya gelen tüm istekleri direkt login'e yönlendir
+  redirect('/login')
 }
 
