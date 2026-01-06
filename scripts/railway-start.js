@@ -40,7 +40,13 @@ async function main() {
   
   console.log('Starting application...');
   // Start the Next.js server
-  require('../.next/standalone/server.js');
+  const serverPath = path.join(process.cwd(), '.next', 'standalone', 'server.js');
+  if (fs.existsSync(serverPath)) {
+    require(serverPath);
+  } else {
+    console.error('Server file not found:', serverPath);
+    process.exit(1);
+  }
 }
 
 main().catch(console.error);
