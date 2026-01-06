@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:network": "next dev -H 0.0.0.0",
     "build": "next build",
-    "start": "node .next/standalone/server.js",
+    "start": "next start -p ${PORT:-3000}",
     "postinstall": "npx prisma generate",
     "lint": "next lint",
     "db:seed": "tsx prisma/seed.ts",
