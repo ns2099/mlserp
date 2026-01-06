@@ -58,11 +58,18 @@ async function main() {
     process.exit(1);
   }
   
+  // Ensure PORT is set (Railway provides this automatically)
+  const port = process.env.PORT || '3000';
+  console.log(`🌐 Starting server on port ${port}...`);
+  
   // Use spawn to keep the process alive
   const server = spawn('node', [serverPath], {
     stdio: 'inherit',
     cwd: process.cwd(),
-    env: process.env
+    env: {
+      ...process.env,
+      PORT: port
+    }
   });
   
   server.on('error', (error) => {
