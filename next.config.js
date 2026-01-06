@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'standalone',
   images: {
     domains: [],
-    unoptimized: false,
+    unoptimized: true, // Railway'de sharp sorunlarını önlemek için
   },
   // Browser extension hatalarını azaltmak için
   onDemandEntries: {
