@@ -10,15 +10,11 @@
     "railway-start": "node scripts/railway-start.js",
     "postinstall": "npx prisma generate",
     "lint": "next lint",
-    "db:seed": "tsx prisma/seed.ts",
     "create-admin": "node scripts/create-admin.js",
     "check-db": "node scripts/check-db.js",
     "verify-admin": "node scripts/verify-admin.js",
     "update-password": "node scripts/update-admin-password.js",
     "update-existing-users": "node scripts/update-existing-users-email-verification.js"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",

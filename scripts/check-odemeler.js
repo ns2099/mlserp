@@ -8,7 +8,6 @@ async function main() {
     
     if (odemeSayisi === 0) {
       console.log('\n⚠️  Ödeme kaydı bulunmuyor!')
-      console.log('Seed script\'ini çalıştırın: npx tsx prisma/seed.ts')
     } else {
       const odemeler = await prisma.odeme.findMany({
         take: 5,
