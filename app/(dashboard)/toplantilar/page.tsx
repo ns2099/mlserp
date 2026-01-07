@@ -7,16 +7,9 @@ import { formatDate } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ToplantilarPage() {
-  const session = await getSession()
-
-  if (!session) {
-    redirect('/login')
-  }
-
-  let toplantilar = []
+async function getToplantilar() {
   try {
-    toplantilar = await prisma.toplanti.findMany({
+    return await prisma.toplanti.findMany({
       include: {
         firma: true,
         yetkiliKisi: true,
@@ -31,20 +24,24 @@ export default async function ToplantilarPage() {
       orderBy: { toplantiTarihi: 'desc' },
     })
   } catch (error: any) {
-    console.error('Toplantılar yüklenirken hata:', error)
-    // Eğer tablo yoksa boş array döndür
-    if (
-      error.code === 'P2021' ||
-      error.message?.includes('does not exist') ||
-      error.message?.includes('no such table') ||
-      error.message?.includes('The table')
-    ) {
-      console.log('Toplanti tablosu henüz oluşturulmamış, boş liste döndürülüyor')
-      toplantilar = []
-    } else {
-      throw error
+    // P2021 = Table does not exist
+    if (error.code === 'P2021' || error.message?.includes('does not exist') || error.message?.includes('no such table')) {
+      console.log('Toplanti tablosu henüz oluşturulmamış')
+      return []
     }
+    console.error('Toplantılar yüklenirken hata:', error)
+    return []
   }
+}
+
+export default async function ToplantilarPage() {
+  const session = await getSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  const toplantilar = await getToplantilar()
 
   return (
     <div className="space-y-6">
