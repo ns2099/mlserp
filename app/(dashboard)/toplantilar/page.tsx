@@ -1,22 +1,11 @@
 import { getSession } from '@/lib/session'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { prisma } from '@/lib/prisma'
 import { Calendar, Building2, User, Plus, Edit, Trash2 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
-
-async function getToplantilar() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/toplanti`, {
-    cache: 'no-store',
-  })
-  
-  if (!response.ok) {
-    return []
-  }
-  
-  return response.json()
-}
 
 export default async function ToplantilarPage() {
   const session = await getSession()
@@ -25,7 +14,20 @@ export default async function ToplantilarPage() {
     redirect('/login')
   }
 
-  const toplantilar = await getToplantilar()
+  const toplantilar = await prisma.toplanti.findMany({
+    include: {
+      firma: true,
+      yetkiliKisi: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+          adSoyad: true,
+        },
+      },
+    },
+    orderBy: { toplantiTarihi: 'desc' },
+  })
 
   return (
     <div className="space-y-6">
