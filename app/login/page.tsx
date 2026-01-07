@@ -8,6 +8,7 @@ export default function LoginPage() {
   const router = useRouter()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [emailSent, setEmailSent] = useState('')
@@ -24,7 +25,7 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, rememberMe }),
       })
 
       const data = await response.json()
@@ -45,7 +46,8 @@ export default function LoginPage() {
           setLoading(false)
         } else {
           // Normal giriş - ana sayfaya yönlendir
-          window.location.href = '/'
+          // Sayfayı tamamen yenile ki session cookie'leri doğru şekilde yüklensin
+          window.location.href = '/dashboard'
         }
       } else {
         setError(data.error || 'Kullanıcı adı veya şifre hatalı!')
@@ -140,6 +142,19 @@ export default function LoginPage() {
               placeholder="Şifrenizi girin"
               style={{ color: '#111827', backgroundColor: '#ffffff' }}
             />
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="rememberMe"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
+              Oturumu açık tut
+            </label>
           </div>
 
           <button

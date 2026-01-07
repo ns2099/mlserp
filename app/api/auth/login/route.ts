@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json()
+    const { username, password, rememberMe } = await request.json()
 
     if (!username || !password) {
       return NextResponse.json(
@@ -109,6 +109,11 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Oturum süresini belirle: rememberMe true ise 30 gün, değilse 1 gün
+    const sessionDuration = rememberMe 
+      ? 30 * 24 * 60 * 60 // 30 gün
+      : 24 * 60 * 60 // 1 gün
+
     // Basit session token oluştur (güvenlik için JWT kullanılabilir ama şimdilik basit tutuyoruz)
     const sessionToken = Buffer.from(
       JSON.stringify({
@@ -116,7 +121,7 @@ export async function POST(request: NextRequest) {
         username: user.username,
         name: user.adSoyad,
         role: user.yetki,
-        exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 gün
+        exp: Date.now() + sessionDuration * 1000,
       })
     ).toString('base64')
 
@@ -143,7 +148,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: false, // Cloudflare Tunnel için false (Cloudflare HTTPS → Node HTTP)
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 gün
+      maxAge: sessionDuration, // rememberMe'ye göre ayarlanmış süre
       path: '/',
     })
 

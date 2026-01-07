@@ -24,14 +24,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Session yoksa login'e yönlendir - MUTLAKA relative path kullan
+  // Session yoksa login'e yönlendir
+  // Ancak login sayfasından gelen istekleri kontrol etme (redirect loop'u önlemek için)
   if (!session) {
-    // request.url'i kullanarak doğru base URL'i al, ama path'i relative yap
     const loginUrl = new URL('/login', request.url)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    
-    // Relative redirect kullan - Next.js otomatik olarak doğru base URL'i kullanır
-    return NextResponse.redirect(loginUrl)
+    // Eğer zaten login sayfasına gidiyorsa redirect yapma
+    if (pathname !== '/login') {
+      loginUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
   }
 
   return NextResponse.next()
