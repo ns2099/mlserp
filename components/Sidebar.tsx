@@ -142,8 +142,8 @@ export default function Sidebar() {
       icon: Users,
       label: 'Kullanıcı',
       children: [
-        // Sadece admin kullanıcıları için "Kullanıcı Oluştur" linki
-        ...(session?.role === 'Yönetici' 
+        // Sadece admin kullanıcı adına sahip kullanıcılar için "Kullanıcı Oluştur" linki
+        ...(session?.username === 'admin' 
           ? [{ href: '/kullanici/olustur', label: 'Kullanıcı Oluştur' }]
           : []
         ),

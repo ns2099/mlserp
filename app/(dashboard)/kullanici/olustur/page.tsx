@@ -17,8 +17,9 @@ export default function KullaniciOlusturPage() {
           const data = await response.json()
           if (data.success) {
             setSession(data.user)
-            // Admin kontrolü
-            if (data.user.role !== 'Yönetici') {
+            // Admin kontrolü - sadece admin kullanıcı adına sahip kullanıcılar kullanıcı ekleyebilir
+            if (data.user.username !== 'admin') {
+              alert('Bu işlem için admin yetkisi gereklidir. Anasayfaya yönlendiriliyorsunuz.')
               router.push('/')
               return
             }
@@ -82,12 +83,12 @@ export default function KullaniciOlusturPage() {
     )
   }
 
-  if (!session || session.role !== 'Yönetici') {
+  if (!session || session.username !== 'admin') {
     return (
       <div className="max-w-2xl mx-auto">
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p className="font-semibold">Yetkisiz Erişim</p>
-          <p className="text-sm mt-1">Bu işlem için Yönetici yetkisi gereklidir.</p>
+          <p className="text-sm mt-1">Bu işlem için admin yetkisi gereklidir.</p>
         </div>
       </div>
     )
