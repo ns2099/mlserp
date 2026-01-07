@@ -57,10 +57,28 @@ export default function TeklifDuzenlePage() {
     fetch(`/api/teklif/${id}`)
       .then((res) => res.json())
       .then((data: Teklif) => {
+        // Aciklama JSON string olabilir, parse etmeyi dene
+        let aciklamaText = ''
+        if (data.aciklama) {
+          try {
+            const parsed = JSON.parse(data.aciklama)
+            // Eğer parse edilen obje bir meta objesi ise, sadece "not" alanını göster
+            if (parsed && typeof parsed === 'object' && parsed.not !== undefined) {
+              aciklamaText = parsed.not || ''
+            } else {
+              // Eğer parse edilemezse veya farklı bir format ise, olduğu gibi göster
+              aciklamaText = data.aciklama
+            }
+          } catch (e) {
+            // JSON değilse, olduğu gibi göster
+            aciklamaText = data.aciklama
+          }
+        }
+        
         setFormData({
           ad: data.ad || '',
           firmaId: data.firmaId,
-          aciklama: data.aciklama || '',
+          aciklama: aciklamaText,
           durum: data.durum,
         })
         setUrunler(
