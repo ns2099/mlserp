@@ -47,7 +47,10 @@ export default function LoginPage() {
         } else {
           // Normal giriş - ana sayfaya yönlendir
           // Sayfayı tamamen yenile ki session cookie'leri doğru şekilde yüklensin
-          window.location.href = '/dashboard'
+          // Cookie'nin set edilmesi için kısa bir gecikme ekle
+          setTimeout(() => {
+            window.location.href = '/'
+          }, 100)
         }
       } else {
         setError(data.error || 'Kullanıcı adı veya şifre hatalı!')
