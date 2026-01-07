@@ -33,7 +33,13 @@ export default async function ToplantilarPage() {
   } catch (error: any) {
     console.error('Toplantılar yüklenirken hata:', error)
     // Eğer tablo yoksa boş array döndür
-    if (error.message?.includes('does not exist') || error.message?.includes('no such table')) {
+    if (
+      error.code === 'P2021' ||
+      error.message?.includes('does not exist') ||
+      error.message?.includes('no such table') ||
+      error.message?.includes('The table')
+    ) {
+      console.log('Toplanti tablosu henüz oluşturulmamış, boş liste döndürülüyor')
       toplantilar = []
     } else {
       throw error
