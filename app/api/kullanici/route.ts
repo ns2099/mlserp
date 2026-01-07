@@ -11,7 +11,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    const isAdmin = session.username === 'admin'
+
+    // Admin tüm kullanıcıları görebilir, normal kullanıcılar sadece kendilerini
     const kullanicilar = await prisma.user.findMany({
+      where: isAdmin ? {} : { id: session.id },
       select: {
         id: true,
         username: true,
@@ -32,14 +36,14 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
     
-    // Sadece admin kullanıcıları kullanıcı oluşturabilir
+    // Sadece admin kullanıcı adına sahip kullanıcılar kullanıcı oluşturabilir
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    if (session.role !== 'Yönetici') {
+    if (session.username !== 'admin') {
       return NextResponse.json(
-        { error: 'Bu işlem için Yönetici yetkisi gereklidir' },
+        { error: 'Bu işlem için admin yetkisi gereklidir' },
         { status: 403 }
       )
     }

@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/session'
+import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Plus, Users, Edit } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
@@ -8,7 +10,17 @@ import KullaniciExcelExport from './KullaniciExcelExport'
 export const dynamic = 'force-dynamic'
 
 export default async function KullaniciListePage() {
+  const session = await getSession()
+
+  if (!session) {
+    redirect('/login')
+  }
+
+  const isAdmin = session.username === 'admin'
+
+  // Admin tüm kullanıcıları görebilir, normal kullanıcılar sadece kendilerini
   const kullanicilar = await prisma.user.findMany({
+    where: isAdmin ? {} : { id: session.id },
     select: {
       id: true,
       username: true,
@@ -22,17 +34,21 @@ export default async function KullaniciListePage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Kullanıcılar</h1>
-        <div className="flex items-center gap-3">
-          <KullaniciExcelExport kullanicilar={kullanicilar} />
-          <Link
-            href="/kullanici/olustur"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            <Plus size={20} />
-            Yeni Kullanıcı
-          </Link>
-        </div>
+        <h1 className="text-2xl font-bold text-gray-900">
+          {isAdmin ? 'Kullanıcılar' : 'Profilim'}
+        </h1>
+        {isAdmin && (
+          <div className="flex items-center gap-3">
+            <KullaniciExcelExport kullanicilar={kullanicilar} />
+            <Link
+              href="/kullanici/olustur"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              <Plus size={20} />
+              Yeni Kullanıcı
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -97,12 +113,14 @@ export default async function KullaniciListePage() {
                           className="inline-flex items-center gap-2 px-3 py-1 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
                         >
                           <Edit size={16} />
-                          Düzenle
+                          {isAdmin && kullanici.id !== session.id ? 'Düzenle' : 'Şifre Değiştir'}
                         </Link>
-                        <KullaniciSilButton
-                          kullaniciId={kullanici.id}
-                          kullaniciAdi={kullanici.username}
-                        />
+                        {isAdmin && kullanici.username !== 'admin' && (
+                          <KullaniciSilButton
+                            kullaniciId={kullanici.id}
+                            kullaniciAdi={kullanici.username}
+                          />
+                        )}
                       </div>
                     </td>
                   </tr>
