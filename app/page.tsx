@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  // Ana sayfaya gelen tüm istekleri direkt login'e yönlendir
-  redirect('/login')
+  // Ana sayfa artık dashboard içinde, buraya gelenleri ana sayfaya yönlendir
+  // Next.js route groups sayesinde '/' hem root hem de (dashboard) içinde çalışır
+  redirect('/')
 }
-

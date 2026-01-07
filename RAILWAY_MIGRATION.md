@@ -69,3 +69,4 @@ SQLite production için ideal değil. PostgreSQL'e geçmek isterseniz:
    npx tsx prisma/seed.ts
    ```
 
+

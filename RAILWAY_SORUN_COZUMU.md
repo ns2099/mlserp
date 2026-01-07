@@ -132,3 +132,4 @@ Railway Dashboard → Projeniz → **Deploy Logs** → **Terminal** sekmesinde:
 - Database'i kontrol edebilirsiniz
 - Logları görebilirsiniz
 
+

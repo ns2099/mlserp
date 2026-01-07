@@ -13,3 +13,4 @@ Write-Host "NEXTAUTH_SECRET=$secret`n" -ForegroundColor Gray
 $secret | Set-Clipboard
 Write-Host "✅ Secret panoya kopyalandı!`n" -ForegroundColor Green
 
+

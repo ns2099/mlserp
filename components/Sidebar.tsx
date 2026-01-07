@@ -22,15 +22,7 @@ import {
 import { useState } from 'react'
 
 const menuItems = [
-  { href: '/dashboard', icon: Home, label: 'Anasayfa' },
-  {
-    href: '#',
-    icon: FolderKanban,
-    label: 'Projeler',
-    children: [
-      { href: '/projeler', label: 'Tüm Projeler' },
-    ],
-  },
+  { href: '/', icon: Home, label: 'Anasayfa' },
   {
     href: '#',
     icon: Wrench,
@@ -127,7 +119,7 @@ export default function Sidebar() {
   }
 
   const isActive = (href: string) => {
-    if (href === '/dashboard') return pathname === '/dashboard' || pathname === '/'
+    if (href === '/') return pathname === '/' || pathname === '/dashboard'
     return pathname?.startsWith(href)
   }
 

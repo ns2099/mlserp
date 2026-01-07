@@ -56,3 +56,4 @@ GitHub'da dosyalar göründükten sonra:
 2. Veya Railway'de "Redeploy" butonuna tıklayın
 3. Railway artık projeyi algılayacak!
 
+
