@@ -99,3 +99,4 @@ SSL sertifikası aktif olduğunda:
 - ✅ "Güvenli değil" uyarısı kaybolacak
 
 
+

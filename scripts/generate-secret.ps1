@@ -14,3 +14,4 @@ $secret | Set-Clipboard
 Write-Host "✅ Secret panoya kopyalandı!`n" -ForegroundColor Green
 
 
+

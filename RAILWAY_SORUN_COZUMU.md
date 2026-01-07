@@ -133,3 +133,4 @@ Railway Dashboard → Projeniz → **Deploy Logs** → **Terminal** sekmesinde:
 - Logları görebilirsiniz
 
 
+

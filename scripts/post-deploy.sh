@@ -9,3 +9,4 @@ echo "🌱 Seeding database..."
 npx tsx prisma/seed.ts || echo "Seed skipped (may already be seeded)"
 
 
+

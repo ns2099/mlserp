@@ -17,18 +17,20 @@ model Firma {
   updatedAt      DateTime      @updatedAt
   teklifler      Teklif[]
   yetkiliKisiler YetkiliKisi[]
+  toplantilar    Toplanti[]
 }
 
 model YetkiliKisi {
-  id        String   @id @default(cuid())
-  firmaId   String
-  adSoyad   String
-  telefon   String?
-  email     String?
-  pozisyon  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  firma     Firma    @relation(fields: [firmaId], references: [id], onDelete: Cascade)
+  id          String      @id @default(cuid())
+  firmaId     String
+  adSoyad     String
+  telefon     String?
+  email       String?
+  pozisyon    String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  firma       Firma       @relation(fields: [firmaId], references: [id], onDelete: Cascade)
+  toplantilar Toplanti[]
 }
 
 model Teklif {
@@ -201,6 +203,7 @@ model User {
   uretimler             Uretim[]
   uretimPlanlamaAdimlari UretimPlanlamaAdimi[]
   odemeler              Odeme[]
+  toplantilar           Toplanti[]
 }
 
 model UretimPlanlamaAdimi {
@@ -281,4 +284,19 @@ model Odeme {
   updatedAt     DateTime @updatedAt
   teklif        Teklif?  @relation(fields: [teklifId], references: [id], onDelete: SetNull)
   user          User     @relation(fields: [userId], references: [id])
+}
+
+model Toplanti {
+  id              String      @id @default(cuid())
+  firmaId         String
+  yetkiliKisiId   String?
+  toplantiTarihi  DateTime
+  konu            String?
+  notlar          String?
+  userId          String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  firma           Firma       @relation(fields: [firmaId], references: [id], onDelete: Cascade)
+  yetkiliKisi     YetkiliKisi? @relation(fields: [yetkiliKisiId], references: [id], onDelete: SetNull)
+  user            User        @relation(fields: [userId], references: [id])
 }

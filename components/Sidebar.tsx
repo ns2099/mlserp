@@ -18,6 +18,7 @@ import {
   FileCheck,
   FolderKanban,
   DollarSign,
+  Calendar,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
@@ -47,6 +48,15 @@ export default function Sidebar() {
   // Menu items - Kullanıcı menüsü admin kontrolü ile
   const baseMenuItems = [
     { href: '/', icon: Home, label: 'Anasayfa' },
+    {
+      href: '#',
+      icon: Calendar,
+      label: 'Toplantılarım',
+      children: [
+        { href: '/toplantilar', label: 'Tüm Toplantılar' },
+        { href: '/toplantilar/olustur', label: 'Yeni Toplantı' },
+      ],
+    },
     {
       href: '#',
       icon: FolderKanban,
