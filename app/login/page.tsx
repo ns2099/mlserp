@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
@@ -13,6 +13,29 @@ export default function LoginPage() {
   const [success, setSuccess] = useState('')
   const [emailSent, setEmailSent] = useState('')
   const [loading, setLoading] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  // Sayfa yüklendiğinde session kontrolü yap
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session-check')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.hasSession) {
+            // Session varsa ana sayfaya yönlendir
+            window.location.href = '/'
+            return
+          }
+        }
+      } catch (error) {
+        console.error('Session check error:', error)
+      } finally {
+        setCheckingSession(false)
+      }
+    }
+    checkSession()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
