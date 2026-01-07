@@ -14,20 +14,31 @@ export default async function ToplantilarPage() {
     redirect('/login')
   }
 
-  const toplantilar = await prisma.toplanti.findMany({
-    include: {
-      firma: true,
-      yetkiliKisi: true,
-      user: {
-        select: {
-          id: true,
-          username: true,
-          adSoyad: true,
+  let toplantilar = []
+  try {
+    toplantilar = await prisma.toplanti.findMany({
+      include: {
+        firma: true,
+        yetkiliKisi: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            adSoyad: true,
+          },
         },
       },
-    },
-    orderBy: { toplantiTarihi: 'desc' },
-  })
+      orderBy: { toplantiTarihi: 'desc' },
+    })
+  } catch (error: any) {
+    console.error('Toplantılar yüklenirken hata:', error)
+    // Eğer tablo yoksa boş array döndür
+    if (error.message?.includes('does not exist') || error.message?.includes('no such table')) {
+      toplantilar = []
+    } else {
+      throw error
+    }
+  }
 
   return (
     <div className="space-y-6">
