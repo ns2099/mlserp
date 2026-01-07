@@ -46,11 +46,10 @@ export default function LoginPage() {
           setLoading(false)
         } else {
           // Normal giriş - ana sayfaya yönlendir
-          // Sayfayı tamamen yenile ki session cookie'leri doğru şekilde yüklensin
           // Cookie'nin set edilmesi için kısa bir gecikme ekle
           setTimeout(() => {
             window.location.href = '/'
-          }, 100)
+          }, 200)
         }
       } else {
         setError(data.error || 'Kullanıcı adı veya şifre hatalı!')
@@ -63,6 +62,18 @@ export default function LoginPage() {
       setError('Bir hata oluştu. Lütfen tekrar deneyin.')
       setLoading(false)
     }
+  }
+
+  // Session kontrolü yapılırken loading göster
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Yükleniyor...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
