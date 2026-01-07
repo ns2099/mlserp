@@ -44,8 +44,8 @@ export default function LoginPage() {
           }
           setLoading(false)
         } else {
-          // Normal giriş - dashboard'a yönlendir
-          window.location.href = '/dashboard'
+          // Normal giriş - ana sayfaya yönlendir
+          window.location.href = '/'
         }
       } else {
         setError(data.error || 'Kullanıcı adı veya şifre hatalı!')

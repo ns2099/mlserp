@@ -22,7 +22,7 @@ import {
 import { useState } from 'react'
 
 const menuItems = [
-  { href: '/dashboard', icon: Home, label: 'Anasayfa' },
+  { href: '/', icon: Home, label: 'Anasayfa' },
   {
     href: '#',
     icon: FolderKanban,
@@ -127,7 +127,7 @@ export default function Sidebar() {
   }
 
   const isActive = (href: string) => {
-    if (href === '/dashboard') return pathname === '/dashboard' || pathname === '/'
+    if (href === '/') return pathname === '/' || pathname === '/dashboard'
     return pathname?.startsWith(href)
   }
 
