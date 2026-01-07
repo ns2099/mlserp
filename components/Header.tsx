@@ -63,19 +63,7 @@ export default function Header() {
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 fixed top-0 right-0 left-0 lg:left-64 z-30">
-      <div className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Image
-            src="/mlsmakina.png"
-            alt="MLS MAKİNA"
-            width={32}
-            height={32}
-            className="object-contain"
-            style={{ width: 'auto', height: 'auto' }}
-          />
-          <h2 className="text-xl font-semibold text-gray-800">Hoşgeldin, {session?.name || 'Kullanıcı'}</h2>
-        </div>
-
+      <div className="px-6 py-4 flex items-center justify-end">
         <div className="flex items-center gap-4">
           {/* Döviz Kurları */}
           {dovizKuru && (

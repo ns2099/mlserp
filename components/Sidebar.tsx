@@ -148,19 +148,15 @@ export default function Sidebar() {
         } lg:translate-x-0`}
       >
         <div className="p-6 border-b border-gray-800">
-          <div className="flex items-center gap-3 mb-3">
-              <Image
-                src="/mlsmakina.png"
-                alt="MLS MAKİNA Logo"
-                width={40}
-                height={40}
-                className="object-contain"
-                style={{ width: 'auto', height: 'auto' }}
-              />
-            <div>
-              <h1 className="text-xl font-bold">MLS Makina</h1>
-              <p className="text-xs text-gray-400">Ürün Yönetim Sistemi</p>
-            </div>
+          <div className="flex items-center justify-center">
+            <Image
+              src="/mlsmakina.png"
+              alt="MLS MAKİNA Logo"
+              width={60}
+              height={60}
+              className="object-contain"
+              style={{ width: 'auto', height: 'auto' }}
+            />
           </div>
         </div>
 
