@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { getSession } from '@/lib/session'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 
 export async function GET() {
   try {
-    // Geçici olarak session kontrolü kaldırıldı
+    const session = await getSession()
+    
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const kullanicilar = await prisma.user.findMany({
       select: {
         id: true,
@@ -26,7 +30,20 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    // Geçici olarak session kontrolü kaldırıldı
+    const session = await getSession()
+    
+    // Sadece admin kullanıcıları kullanıcı oluşturabilir
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    if (session.role !== 'Yönetici') {
+      return NextResponse.json(
+        { error: 'Bu işlem için Yönetici yetkisi gereklidir' },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const { username, password, adSoyad, yetki } = body
 

@@ -19,106 +19,131 @@ import {
   FolderKanban,
   DollarSign,
 } from 'lucide-react'
-import { useState } from 'react'
-
-const menuItems = [
-  { href: '/', icon: Home, label: 'Anasayfa' },
-  {
-    href: '#',
-    icon: FolderKanban,
-    label: 'Projeler',
-    children: [
-      { href: '/projeler', label: 'Tüm Projeler' },
-    ],
-  },
-  {
-    href: '#',
-    icon: Wrench,
-    label: 'Makina',
-    children: [
-      { href: '/makina/olustur', label: 'Makina Ekle' },
-      { href: '/makina/liste', label: 'Makinaları Gör' },
-      { href: '/makina/atama', label: 'Makina Ataması' },
-    ],
-  },
-  {
-    href: '#',
-    icon: Building2,
-    label: 'Firma',
-    children: [
-      { href: '/firma/olustur', label: 'Firma Oluştur' },
-      { href: '/firma/liste', label: 'Firmaları Gör' },
-    ],
-  },
-  {
-    href: '#',
-    icon: FileText,
-    label: 'Teklif',
-    children: [
-      { href: '/teklif/olustur', label: 'Teklif Oluştur' },
-      { href: '/teklif/liste?durum=tum', label: 'Tüm Teklifler' },
-      { href: '/teklif/liste?durum=1', label: 'Bekleyen Teklifler' },
-      { href: '/teklif/liste?durum=2', label: 'Onaylanan Teklifler' },
-      { href: '/teklif/liste?durum=3', label: 'Reddedilen Teklifler' },
-      { href: '/teklif/liste?durum=4', label: 'Tamamlanan Teklifler' },
-    ],
-  },
-  {
-    href: '#',
-    icon: FileCheck,
-    label: 'Sözleşmeler',
-    children: [
-      { href: '/sozlesme/olustur', label: 'Sözleşme Oluştur' },
-      { href: '/sozlesme/liste', label: 'Sözleşme Listesi' },
-    ],
-  },
-  {
-    href: '#',
-    icon: Factory,
-    label: 'Üretim',
-    children: [
-      { href: '/uretim-planlama/olustur', label: 'Üretim Planlama' },
-      { href: '/uretim/devam-eden', label: 'Üretimi Devam Edenler' },
-      { href: '/uretim/tamamlanan', label: 'Üretimi Tamamlananlar' },
-      { href: '/uretim-planlama/liste', label: 'Planlama Listesi' },
-    ],
-  },
-  {
-    href: '#',
-    icon: ShoppingCart,
-    label: 'Satın Alma',
-    children: [
-      { href: '/satin-alma/olustur', label: 'Satın Alma Oluştur' },
-      { href: '/satin-alma/liste', label: 'Satın Alma Listesi' },
-    ],
-  },
-  {
-    href: '#',
-    icon: DollarSign,
-    label: 'Finans & Nakit Akışı',
-    children: [
-      { href: '/finans', label: 'Finansal Özet' },
-      { href: '/finans/projeler', label: 'Proje Bazlı Planlama' },
-      { href: '/finans/genel-giderler', label: 'Genel Giderler' },
-      { href: '/finans/yaklasan-odemeler', label: 'Yaklaşan Ödemeler' },
-    ],
-  },
-  {
-    href: '#',
-    icon: Users,
-    label: 'Kullanıcı',
-    children: [
-      { href: '/kullanici/olustur', label: 'Kullanıcı Oluştur' },
-      { href: '/kullanici/liste', label: 'Kullanıcıları Gör' },
-    ],
-  },
-  { href: '/ayarlar', icon: Settings, label: 'Ayarlar' },
-]
+import { useState, useEffect } from 'react'
 
 export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [expandedItems, setExpandedItems] = useState<string[]>([])
+  const [session, setSession] = useState<any>(null)
+
+  useEffect(() => {
+    const loadSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success) {
+            setSession(data.user)
+          }
+        }
+      } catch (error) {
+        console.error('Session load error:', error)
+      }
+    }
+    loadSession()
+  }, [])
+
+  // Menu items - Kullanıcı menüsü admin kontrolü ile
+  const baseMenuItems = [
+    { href: '/', icon: Home, label: 'Anasayfa' },
+    {
+      href: '#',
+      icon: FolderKanban,
+      label: 'Projeler',
+      children: [
+        { href: '/projeler', label: 'Tüm Projeler' },
+      ],
+    },
+    {
+      href: '#',
+      icon: Wrench,
+      label: 'Makina',
+      children: [
+        { href: '/makina/olustur', label: 'Makina Ekle' },
+        { href: '/makina/liste', label: 'Makinaları Gör' },
+        { href: '/makina/atama', label: 'Makina Ataması' },
+      ],
+    },
+    {
+      href: '#',
+      icon: Building2,
+      label: 'Firma',
+      children: [
+        { href: '/firma/olustur', label: 'Firma Oluştur' },
+        { href: '/firma/liste', label: 'Firmaları Gör' },
+      ],
+    },
+    {
+      href: '#',
+      icon: FileText,
+      label: 'Teklif',
+      children: [
+        { href: '/teklif/olustur', label: 'Teklif Oluştur' },
+        { href: '/teklif/liste?durum=tum', label: 'Tüm Teklifler' },
+        { href: '/teklif/liste?durum=1', label: 'Bekleyen Teklifler' },
+        { href: '/teklif/liste?durum=2', label: 'Onaylanan Teklifler' },
+        { href: '/teklif/liste?durum=3', label: 'Reddedilen Teklifler' },
+        { href: '/teklif/liste?durum=4', label: 'Tamamlanan Teklifler' },
+      ],
+    },
+    {
+      href: '#',
+      icon: FileCheck,
+      label: 'Sözleşmeler',
+      children: [
+        { href: '/sozlesme/olustur', label: 'Sözleşme Oluştur' },
+        { href: '/sozlesme/liste', label: 'Sözleşme Listesi' },
+      ],
+    },
+    {
+      href: '#',
+      icon: Factory,
+      label: 'Üretim',
+      children: [
+        { href: '/uretim-planlama/olustur', label: 'Üretim Planlama' },
+        { href: '/uretim/devam-eden', label: 'Üretimi Devam Edenler' },
+        { href: '/uretim/tamamlanan', label: 'Üretimi Tamamlananlar' },
+        { href: '/uretim-planlama/liste', label: 'Planlama Listesi' },
+      ],
+    },
+    {
+      href: '#',
+      icon: ShoppingCart,
+      label: 'Satın Alma',
+      children: [
+        { href: '/satin-alma/olustur', label: 'Satın Alma Oluştur' },
+        { href: '/satin-alma/liste', label: 'Satın Alma Listesi' },
+      ],
+    },
+    {
+      href: '#',
+      icon: DollarSign,
+      label: 'Finans & Nakit Akışı',
+      children: [
+        { href: '/finans', label: 'Finansal Özet' },
+        { href: '/finans/projeler', label: 'Proje Bazlı Planlama' },
+        { href: '/finans/genel-giderler', label: 'Genel Giderler' },
+        { href: '/finans/yaklasan-odemeler', label: 'Yaklaşan Ödemeler' },
+      ],
+    },
+    {
+      href: '#',
+      icon: Users,
+      label: 'Kullanıcı',
+      children: [
+        // Sadece admin kullanıcıları için "Kullanıcı Oluştur" linki
+        ...(session?.role === 'Yönetici' 
+          ? [{ href: '/kullanici/olustur', label: 'Kullanıcı Oluştur' }]
+          : []
+        ),
+        { href: '/kullanici/liste', label: 'Kullanıcıları Gör' },
+      ],
+    },
+    { href: '/ayarlar', icon: Settings, label: 'Ayarlar' },
+  ]
+
+  const menuItems = baseMenuItems
 
   const toggleExpand = (label: string) => {
     setExpandedItems((prev) =>

@@ -1,11 +1,44 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function KullaniciOlusturPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [session, setSession] = useState<any>(null)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success) {
+            setSession(data.user)
+            // Admin kontrolü
+            if (data.user.role !== 'Yönetici') {
+              router.push('/')
+              return
+            }
+          } else {
+            router.push('/login')
+            return
+          }
+        } else {
+          router.push('/login')
+          return
+        }
+      } catch (error) {
+        router.push('/login')
+        return
+      } finally {
+        setCheckingSession(false)
+      }
+    }
+    checkSession()
+  }, [router])
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -36,6 +69,28 @@ export default function KullaniciOlusturPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (checkingSession) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Yükleniyor...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!session || session.role !== 'Yönetici') {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <p className="font-semibold">Yetkisiz Erişim</p>
+          <p className="text-sm mt-1">Bu işlem için Yönetici yetkisi gereklidir.</p>
+        </div>
+      </div>
+    )
   }
 
   return (
