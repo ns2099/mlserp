@@ -10,11 +10,9 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
-  // Server Actions için experimental ayarlar
+  // Server Actions'ı devre dışı bırak (kullanmıyoruz)
   experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
+    serverActions: false,
   },
   // Build cache sorunlarını önlemek için
   swcMinify: true,
