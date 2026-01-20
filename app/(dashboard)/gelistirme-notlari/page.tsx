@@ -15,7 +15,7 @@ export default async function GelistirmeNotlariPage() {
     redirect('/login')
   }
 
-  let notlar = []
+  let notlar: any[] = []
   try {
     notlar = await prisma.gelistirmeNotu.findMany({
       include: {
