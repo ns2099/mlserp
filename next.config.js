@@ -10,9 +10,11 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 2,
   },
-  // Server Actions'ı devre dışı bırak (kullanmıyoruz)
+  // Server Actions ayarları (kullanmıyoruz ama Next.js'in internal kullanımı için)
   experimental: {
-    serverActions: false,
+    serverActions: {
+      allowedOrigins: [],
+    },
   },
   // Build cache sorunlarını önlemek için
   swcMinify: true,
