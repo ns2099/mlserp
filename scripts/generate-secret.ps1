@@ -15,3 +15,4 @@ Write-Host "✅ Secret panoya kopyalandı!`n" -ForegroundColor Green
 
 
 
+

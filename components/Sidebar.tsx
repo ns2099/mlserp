@@ -19,6 +19,7 @@ import {
   FolderKanban,
   DollarSign,
   Calendar,
+  StickyNote,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
@@ -47,6 +48,15 @@ export default function Sidebar() {
 
   // Menu items - Kullanıcı menüsü admin kontrolü ile
   const baseMenuItems = [
+    {
+      href: '#',
+      icon: StickyNote,
+      label: 'Geliştirme Notları',
+      children: [
+        { href: '/gelistirme-notlari', label: 'Tüm Notlar' },
+        { href: '/gelistirme-notlari/olustur', label: 'Yeni Not' },
+      ],
+    },
     { href: '/', icon: Home, label: 'Anasayfa' },
     {
       href: '#',

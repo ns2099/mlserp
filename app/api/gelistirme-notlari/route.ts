@@ -5,15 +5,12 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const session = await getSession()
-    
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const toplantilar = await prisma.toplanti.findMany({
+    const notlar = await prisma.gelistirmeNotu.findMany({
       include: {
-        firma: true,
-        yetkiliKisi: true,
         user: {
           select: {
             id: true,
@@ -22,12 +19,12 @@ export async function GET() {
           },
         },
       },
-      orderBy: { toplantiTarihi: 'desc' },
+      orderBy: { createdAt: 'desc' },
     })
 
-    return NextResponse.json(toplantilar)
+    return NextResponse.json(notlar)
   } catch (error) {
-    console.error('Toplantı listesi hatası:', error)
+    console.error('Geliştirme notları yükleme hatası:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -35,33 +32,27 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession()
-    
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
-    const { firmaId, yetkiliKisiId, toplantiTarihi, konu, notlar } = body
+    const { baslik, icerik } = body
 
-    if (!firmaId || !toplantiTarihi) {
+    if (!baslik || !icerik) {
       return NextResponse.json(
-        { error: 'Firma ve toplantı tarihi gerekli' },
+        { error: 'Başlık ve içerik gerekli' },
         { status: 400 }
       )
     }
 
-    const toplanti = await prisma.toplanti.create({
+    const not = await prisma.gelistirmeNotu.create({
       data: {
-        firmaId,
-        yetkiliKisiId: yetkiliKisiId || null,
-        toplantiTarihi: new Date(toplantiTarihi),
-        konu: konu || null,
-        notlar: notlar || null,
+        baslik,
+        icerik,
         userId: session.id,
       },
       include: {
-        firma: true,
-        yetkiliKisi: true,
         user: {
           select: {
             id: true,
@@ -72,11 +63,9 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    return NextResponse.json(toplanti, { status: 201 })
+    return NextResponse.json(not, { status: 201 })
   } catch (error) {
-    console.error('Toplantı oluşturma hatası:', error)
+    console.error('Geliştirme notu oluşturma hatası:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-
-

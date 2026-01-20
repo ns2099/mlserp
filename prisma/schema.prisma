@@ -204,6 +204,7 @@ model User {
   uretimPlanlamaAdimlari UretimPlanlamaAdimi[]
   odemeler              Odeme[]
   toplantilar           Toplanti[]
+  gelistirmeNotlari     GelistirmeNotu[]
 }
 
 model UretimPlanlamaAdimi {
@@ -299,4 +300,14 @@ model Toplanti {
   firma           Firma       @relation(fields: [firmaId], references: [id], onDelete: Cascade)
   yetkiliKisi     YetkiliKisi? @relation(fields: [yetkiliKisiId], references: [id], onDelete: SetNull)
   user            User        @relation(fields: [userId], references: [id])
+}
+
+model GelistirmeNotu {
+  id        String   @id @default(cuid())
+  baslik    String
+  icerik    String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
 }

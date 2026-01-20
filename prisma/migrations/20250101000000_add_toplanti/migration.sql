@@ -19,3 +19,4 @@ CREATE INDEX "Toplanti_yetkiliKisiId_idx" ON "Toplanti"("yetkiliKisiId");
 CREATE INDEX "Toplanti_userId_idx" ON "Toplanti"("userId");
 CREATE INDEX "Toplanti_toplantiTarihi_idx" ON "Toplanti"("toplantiTarihi");
 
+
