@@ -33,8 +33,19 @@ async function createMissingTables() {
       console.log('ℹ️  Toplanti table already exists or error:', e.message)
     }
     
-    // GelistirmeNotu tablosu
+    // GelistirmeNotu tablosu - foreign key olmadan (SQLite uyumlu)
     try {
+      // Önce eski tabloyu sil (varsa ve boşsa)
+      try {
+        const count = await prisma.$queryRawUnsafe(`SELECT COUNT(*) as cnt FROM "GelistirmeNotu"`)
+        if (count && count[0] && count[0].cnt === 0) {
+          await prisma.$executeRawUnsafe(`DROP TABLE IF EXISTS "GelistirmeNotu";`)
+          console.log('ℹ️  Empty GelistirmeNotu table dropped for recreation')
+        }
+      } catch (dropError) {
+        // Tablo yoksa devam et
+      }
+      
       await prisma.$executeRawUnsafe(`
         CREATE TABLE IF NOT EXISTS "GelistirmeNotu" (
           "id" TEXT NOT NULL PRIMARY KEY,
@@ -42,8 +53,7 @@ async function createMissingTables() {
           "icerik" TEXT NOT NULL,
           "userId" TEXT NOT NULL,
           "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-          "updatedAt" DATETIME NOT NULL,
-          CONSTRAINT "GelistirmeNotu_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+          "updatedAt" DATETIME NOT NULL
         );
       `)
       await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "GelistirmeNotu_userId_idx" ON "GelistirmeNotu"("userId");`)

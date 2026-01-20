@@ -46,11 +46,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Kullanıcının var olduğunu kontrol et
+    const user = await prisma.user.findUnique({
+      where: { id: session.id },
+    })
+
+    if (!user) {
+      console.error('Kullanıcı bulunamadı, session id:', session.id)
+      return NextResponse.json(
+        { error: 'Kullanıcı bulunamadı. Lütfen tekrar giriş yapın.' },
+        { status: 404 }
+      )
+    }
+
     const not = await prisma.gelistirmeNotu.create({
       data: {
         baslik,
         icerik,
-        userId: session.id,
+        userId: user.id,
       },
       include: {
         user: {
