@@ -306,6 +306,8 @@ model GelistirmeNotu {
   id        String   @id @default(cuid())
   baslik    String
   icerik    String
+  cozum     String?
+  durum     String   @default("Açık") // Açık, Çözüldü
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

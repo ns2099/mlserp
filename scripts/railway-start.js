@@ -51,12 +51,30 @@ async function createMissingTables() {
           "id" TEXT NOT NULL PRIMARY KEY,
           "baslik" TEXT NOT NULL,
           "icerik" TEXT NOT NULL,
+          "cozum" TEXT,
+          "durum" TEXT NOT NULL DEFAULT 'Açık',
           "userId" TEXT NOT NULL,
           "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
           "updatedAt" DATETIME NOT NULL
         );
       `)
       await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "GelistirmeNotu_userId_idx" ON "GelistirmeNotu"("userId");`)
+      await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "GelistirmeNotu_durum_idx" ON "GelistirmeNotu"("durum");`)
+      
+      // Mevcut tabloya yeni kolonları ekle (varsa)
+      try {
+        await prisma.$executeRawUnsafe(`ALTER TABLE "GelistirmeNotu" ADD COLUMN "cozum" TEXT;`)
+        console.log('ℹ️  Added cozum column to GelistirmeNotu')
+      } catch (alterError) {
+        // Kolon zaten varsa devam et
+      }
+      try {
+        await prisma.$executeRawUnsafe(`ALTER TABLE "GelistirmeNotu" ADD COLUMN "durum" TEXT NOT NULL DEFAULT 'Açık';`)
+        console.log('ℹ️  Added durum column to GelistirmeNotu')
+      } catch (alterError) {
+        // Kolon zaten varsa devam et
+      }
+      
       console.log('✅ GelistirmeNotu table ready')
     } catch (e) {
       console.log('ℹ️  GelistirmeNotu table already exists or error:', e.message)
